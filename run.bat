@@ -1,0 +1,1 @@
+php -s localhost:8000 -t app
