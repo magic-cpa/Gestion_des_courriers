@@ -1,7 +1,6 @@
 
 <body class="flex flex-col items-center justify-center w-screen h-screen bg-gray-200 text-gray-700">
 
-	<!-- Component Start -->
 	<h1 class="font-bold text-2xl">login :)</h1>
 	<form class="flex flex-col bg-white rounded shadow-lg p-12 mt-12" action="">
 		<label class="font-semibold text-xs" for="usernameField">Username or Email</label>
@@ -15,6 +14,5 @@
 			<a class="text-blue-400 hover:text-blue-500" href="#">Sign Up</a>
 		</div>
 	</form>
-
 
 </body>
