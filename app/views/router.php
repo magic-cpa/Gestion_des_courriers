@@ -2,6 +2,7 @@
 
 $request_uri = $_SERVER['REQUEST_URI'];
 
+
 switch ($request_uri) {
     case '/':
         // Example: Include a default view or controller
@@ -11,7 +12,7 @@ switch ($request_uri) {
         require_once __DIR__ . '/auth/login.php'; 
         break;
     case '/signup':
-        require_once __DIR__ . '/auth/login.php';
+        require_once __DIR__ . '/auth/signup.php';
         break;
     case '/forgot-password': 
         require_once __DIR__ . '/auth/forgotPassword.php';
