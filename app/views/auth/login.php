@@ -15,6 +15,6 @@
 			<a class="text-blue-400 hover:text-blue-500" href="#">Sign Up</a>
 		</div>
 	</form>
-	<!-- Component End  -->
+
 
 </body>
