@@ -1,0 +1,107 @@
+* {
+    margin: 0;
+    padding: 0;   
+}
+
+
+header {
+    box-shadow: 1px 6px 17px grey;
+    margin-top: 9%;
+    margin-left: 500px;
+    padding-top: 10px;
+    width: 30.5%;
+    padding-bottom: 10px ;
+    color: rgb(250, 250, 244);
+    background: rgb(6, 49, 190);
+}
+
+.header {
+    margin-left: 15%;
+}
+
+#red {
+    margin-top:30.5%;;
+}
+
+.fidele {
+    box-shadow: 1px 6px 17px grey;
+    margin: 1%;
+    margin-left: 500px;
+    width: 30.5%;
+    padding-top: 1%;
+    background: rgb(253, 253, 253);
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+    color: rgb(15, 15, 15);
+}
+
+#submit {
+    margin: 3%;
+    background: #2d64fc;
+    width: 80%;
+    margin-left: 10%;
+    border: none;
+    outline: none;
+    color: #fff;
+    height: 50px;
+    border-radius: 30px;
+    margin-top: 20px;
+    font-size: 30px;
+}
+
+#submit:hover {
+    color: rgb(18, 64, 150);
+}
+
+label {
+    margin: 5%;
+}
+
+input {
+    height: 50px;
+    width: 400px;
+    margin: 10px;
+    color: #000;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;  
+    border: none;
+    outline: none;
+    background: rgb(250, 250, 244);
+    border-bottom: 1px solid #ccc;
+}
+
+#login {
+    margin-left: 20px;
+}
+
+#password {
+    margin-left: 20px;
+}
+
+.flex {
+    box-shadow: 1px 6px 17px grey;
+    display: inline-flex;
+    margin-left: 500Px;
+    width: 30.5%;
+    height: 50px;
+    background: rgb(243, 241, 241);  
+    font-size: 15px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
+}
+
+#pass:hover, #ins:hover {
+    color: rgb(224, 24, 24);
+}
+
+#flex2 {
+    margin-top: 15px;
+    margin-left: 50px;
+    color: blue;
+}
+
+#flex1 {
+    margin-top: 15px;
+    margin-left: 40px;  
+    color: blue;
+}
+
