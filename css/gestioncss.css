@@ -1,107 +1,100 @@
 * {
     margin: 0;
-    padding: 0;   
+    padding: 0;
+    box-sizing: border-box;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+form {
+    width: 400px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
 header {
-    box-shadow: 1px 6px 17px grey;
-    margin-top: 9%;
-    margin-left: 500px;
-    padding-top: 10px;
-    width: 30.5%;
-    padding-bottom: 10px ;
-    color: rgb(250, 250, 244);
-    background: rgb(6, 49, 190);
+    background-color: rgb(6, 49, 190);
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 20px;
 }
 
 .header {
-    margin-left: 15%;
+    margin: 0;
 }
 
 #red {
-    margin-top:30.5%;;
+    font-size: 1.5em;
 }
 
-.fidele {
-    box-shadow: 1px 6px 17px grey;
-    margin: 1%;
-    margin-left: 500px;
-    width: 30.5%;
-    padding-top: 1%;
-    background: rgb(253, 253, 253);
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 20px;
-    color: rgb(15, 15, 15);
+.login-container {
+    margin-bottom: 20px;
 }
 
-#submit {
-    margin: 3%;
-    background: #2d64fc;
-    width: 80%;
-    margin-left: 10%;
-    border: none;
-    outline: none;
-    color: #fff;
-    height: 50px;
-    border-radius: 30px;
-    margin-top: 20px;
-    font-size: 30px;
-}
-
-#submit:hover {
-    color: rgb(18, 64, 150);
+.form-group {
+    margin-bottom: 20px;
 }
 
 label {
-    margin: 5%;
+    display: block;
+    margin-bottom: 5px;
 }
 
-input {
-    height: 50px;
-    width: 400px;
-    margin: 10px;
-    color: #000;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 20px;  
+input[type="text"],
+input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#submit {
+    background-color: #2d64fc;
+    color: #fff;
     border: none;
-    outline: none;
-    background: rgb(250, 250, 244);
-    border-bottom: 1px solid #ccc;
+    padding: 12px;
+    width: 100%;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
-#login {
-    margin-left: 20px;
+#submit:hover {
+    background-color: #1a3dab;
 }
 
-#password {
-    margin-left: 20px;
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
 }
 
-.flex {
-    box-shadow: 1px 6px 17px grey;
-    display: inline-flex;
-    margin-left: 500Px;
-    width: 30.5%;
-    height: 50px;
-    background: rgb(243, 241, 241);  
-    font-size: 15px;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
+.links-container {
+    text-align: center;
 }
 
-#pass:hover, #ins:hover {
-    color: rgb(224, 24, 24);
+.links-container div {
+    margin: 10px 0;
 }
 
-#flex2 {
-    margin-top: 15px;
-    margin-left: 50px;
-    color: blue;
+.links-container a {
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
 }
 
-#flex1 {
-    margin-top: 15px;
-    margin-left: 40px;  
-    color: blue;
+.links-container a:hover {
+    color: #1a3dab;
 }
-
