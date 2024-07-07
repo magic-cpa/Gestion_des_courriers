@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 // connection
 $server = "localhost";
 $login = "root";
-$pass = "";
+$pass = "1234";
 $dbname = "gestion_courrier";
 $db = mysqli_connect($server, $login, $pass, $dbname)
     or die('DATA pas connecter');

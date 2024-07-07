@@ -188,8 +188,7 @@ tr:hover .cut { opacity: 1; }
 		$nodays = $row['nodays'];
 	
 	}
-	
-									
+				
 	?>
 		<header>
 			<h1>Information of Guest</h1>

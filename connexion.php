@@ -1,21 +1,37 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
     <link type="text/css" rel="stylesheet" href="css/gestioncss.css" />
+	<link href="css/font-awesome.css" rel="stylesheet"> 
+	<link rel="stylesheet" href="css/chocolat.css" type="text/css" media="screen">
+	<link href="css/easy-responsive-tabs.css" rel='stylesheet' type='text/css'/>
+	<link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen" property="" />
+	<link rel="stylesheet" href="css/jquery-ui.css" />
+	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<script type="text/javascript" src="js/modernizr-2.6.2.min.js"></script>
     <link rel="stylesheet" href="fontawesome-free-5.15.4-web/fontawesome-free-5.15.4-web/css/all.min.css">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 </head>
 
-<form action="traitement.php" method="post">
-
+<form action="traitement.php" method="POST">
     <header>
         <div class="header">
             <h2><b id="red">GESTION DES COURRIERS</b></h2>
         </div>
     </header>
-
+    <?php
+    {/** Error display **/}
+    if (isset($_GET['erreur'])) {
+        $err = $_GET['erreur'];
+            if ($err == 1) {
+                echo "<p style='color:#fff;  width: 100%; background: red;text-align: center; 
+                padding:1rem; margin:0.2rem'>Login ou le mot de passe ne correspond à aucun compte</p>";
+            } elseif ($err == 2) {
+                echo "<p style='color:#fff;  width: 100%; background: red;  padding:1rem; 
+                margin:0.2rem text-align: center'>Remplissez les champs s'il vous plaît</p>";
+            }
+    }
+    ?>
     <body>
         <div class="fidele">
          
@@ -31,17 +47,6 @@
             <div>
                 <button type="submit" name="connecter" id="submit">Connecter</button>
             </div>
-
-            <?php
-            if (isset($_GET['erreur'])) {
-                $err = $_GET['erreur'];
-                if ($err == 1) {
-                    echo "<p style='color:#fff;  width: 100%; background: red;text-align: center'>Login ou le mot de passe ne correspond à aucun compte</p>";
-                } elseif ($err == 2) {
-                    echo "<p style='color:#fff;  width: 100%; background: red; padding-top: 5px; padding-bottom:5px; text-align: center'>Remplissez les champs s'il vous plaît</p>";
-                }
-            }
-            ?>
         </div>
 
         <div class="flex">
@@ -54,7 +59,6 @@
         </div>
 
     </body>
-
 </form>
 
 </html>

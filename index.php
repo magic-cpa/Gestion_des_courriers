@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 	<html lang="en">
-	<head>
+<head>
 	<title>GESTION DU COURRIER</title>
 	<!-- for-mobile-apps -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,23 +21,12 @@
 	<link href="//fonts.googleapis.com/css?family=Oswald:300,400,700" rel="stylesheet">
 	<link href="//fonts.googleapis.com/css?family=Federo" rel="stylesheet">
 	<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
-	<!--//fonts-->
-	</head>
+</head>
 
         
-    <body>
-        
-
-
+<body>
 <!-- header -->
 <div class="banner-top">
-    <div class="social-bnr-agileits">
-	<ul class="social-icons3">
-		<li><a href="https://www.facebook.com/" class="fa fa-facebook icon-border facebook"> </a></li>
-		<li><a href="https://twitter.com/" class="fa fa-twitter icon-border twitter"> </a></li>
-		<li><a href="https://plus.google.com/u/0/" class="fa fa-google-plus icon-border googleplus"> </a></li> 
-	</ul>
-	</div>
 		<div class="contact-bnr-w3-agile">
 			<ul>
 				<li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:info@example.com">gestioncourrier@gmail.com</a></li>
@@ -75,8 +64,6 @@
 			</div>
 		</div>
 	<!-- //header -->
-
-
 <!-- banner -->
 <div id="home" class="w3ls-banner">
 			<!-- banner-text -->

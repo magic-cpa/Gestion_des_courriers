@@ -1,5 +1,5 @@
 body {
-  background: url('imag.jpg');
+  background: url('imag.jpg') no-repeat center center fixed;
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
@@ -43,5 +43,26 @@ input {
   background: rgb(64, 82, 241);
   margin-left: 35%;
   margin-top: 50px;
+}
+
+.tete h1, .tete h3 {
+  color: #fff;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 100;
+}
+
+.alert {
+  font-size: 20px;
+}
+
+.form-control {
+  height: 50px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+}
+
+.btn-lg {
+  font-size: 20px;
+  background: rgb(64, 82, 241);
 }
 
