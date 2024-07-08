@@ -55,7 +55,7 @@
 								<li class="menu__item"><a href="#about" class="menu__link scroll">Les Courriers</a></li>
 								<li class="menu__item"><a href="#contact" class="menu__link scroll">Contact </a></li>
 								<li class="menu__item"><a href="connexion.php" class="">Mon compte </a></li>
-                                <li class="menu__item"><a href="admin.php" class="">Admin</a></li>
+                                <!-- <li class="menu__item"><a href="admin.php" class="">Admin</a></li> -->
 							</ul>
 						</nav>
 					</div>
@@ -120,20 +120,20 @@
 			
 
         <!-- COURRIER DES SOCIETES -->
-        <div id="availability-agileits">
+        <!-- <div id="availability-agileits">
         <div class="col-md-12 book-form-left-w3layouts">
             <a href="admin/reservation.php"><h2>COURRIER DES SOCIETES</h2></a>
         </div>
             <div class="clearfix"> </div>
-        </div>
+        </div> -->
 
         <?php
     $server = "localhost";
     $login = "root";
-    $pass = "";
+    $pass = "1234";
     $dbname = "gestion_courrier";
     $resultat = "";
-    $connexe = new mysqli("localhost", "root", "", "gestion_courrier");
+    $connexe = new mysqli("localhost", "root", "1234", "gestion_courrier");
     $requette = "SELECT * FROM _courrier ";
     $resultat = $connexe->query($requette);
 
@@ -142,7 +142,7 @@
 
   
 
-<div id = "about" class="container">
+<!-- <div id = "about" class="container">
 	<h3 class="title-w3-agileits title-black-wthree">LES COURRIERS</h3>
 		<div class="priceing-table-main">
 			<div class="row">
@@ -172,7 +172,7 @@
 			<?php } ?>
             </div>
 		</div>
-</div>
+</div> -->
 
 <!-- contact -->
 <section class="contact-w3ls" id="contact">
@@ -180,7 +180,7 @@
 		<div class="col-lg-6 col-md-6 col-sm-6 contact-w3-agile2" data-aos="flip-left">
 			<div class="contact-agileits">
 				<h4>Contactez Nous</h4>
-				<form  method="post" name="sentMessage" id="contactForm" >
+				<form  action="/action/contact.php" method="post" name="sentMessage" id="contactForm" >
 					<div class="control-group form-group">
                         
                             <label class="contact-p1">Votre :</label>
@@ -202,32 +202,15 @@
 							<p class="help-block"></p>
 						
                     </div>
-                    
-                    
                     <input type="submit" name="sub" value="Send Now" class="btn btn-primary">	
 				</form>
-				<?php
-				if(isset($_POST['sub']))
-				{
-					$name =$_POST['name'];
-					$phone = $_POST['phone'];
-					$email = $_POST['email'];
-					$approval = "Not Allowed";
-					$sql = "INSERT INTO `contact`(`fullname`, `phoneno`, `email`,`cdate`,`approval`) VALUES ('$name','$phone','$email',now(),'$approval')" ;
-					
-					
-					if(mysqli_query($con,$sql))
-					echo"OK";
-					
-				}
-				?>
 			</div>
 		</div>
 		<div class="col-lg-6 col-md-6 col-sm-6 contact-w3-agile1" data-aos="flip-right">
 			<h4>Nos Adresses</h4>
 			<p class="contact-agile1"><strong>Phone :</strong>+229 99 23 92 87</p>
 			<p class="contact-agile1"><strong>Email :</strong> <a href="mailto:name@example.com">INFO@gestion.COM</a></p>
-			<p class="contact-agile1"><strong>Address :</strong> Cotonou, Benin, Afrique</p>
+			<p class="contact-agile1"><strong>Address :</strong> Alger, Algerie, Afrique</p>
 																
 			<div class="social-bnr-agileits footer-icons-agileinfo">
 				<ul class="social-icons3">

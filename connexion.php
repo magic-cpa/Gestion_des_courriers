@@ -13,22 +13,21 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 </head>
 
-<form action="traitement.php" method="POST">
-    <header>
-        <div class="header">
+<form action="/action/traitement.php" method="POST">
+   <!-- <header>
+         <div class="header">
             <h2><b id="red">GESTION DES COURRIERS</b></h2>
-        </div>
-    </header>
+        </div> 
+    </header>-->
     <?php
     {/** Error display **/}
     if (isset($_GET['erreur'])) {
         $err = $_GET['erreur'];
             if ($err == 1) {
-                echo "<p style='color:#fff;  width: 100%; background: red;text-align: center; 
-                padding:1rem; margin:0.2rem'>Login ou le mot de passe ne correspond à aucun compte</p>";
+                echo "<p style='color:#fff;margin-left:0rem;  width: 100%; background: red;text-align: center; padding:1rem; margin:0.5rem'>Login ou le mot de passe ne correspond à aucun compte</p>";
             } elseif ($err == 2) {
                 echo "<p style='color:#fff;  width: 100%; background: red;  padding:1rem; 
-                margin:0.2rem text-align: center'>Remplissez les champs s'il vous plaît</p>";
+                margin:0.5rem; margin-left:0rem;  text-align: center'>Remplissez les champs s'il vous plaît</p>";
             }
     }
     ?>
@@ -37,7 +36,7 @@
          
             <div>
                 <!-- <i class="fas fa-user"></i> -->
-                <label for="">Login</label>
+                <label for="">Nom agent</label>
                 <input type="text" name="login" placeholder="Entrer votre login" id="login">
             </div>
             <div>

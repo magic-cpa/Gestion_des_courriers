@@ -41,18 +41,18 @@ if (isset($_POST['connecter'])) {
 
             if ($count != 0) { // Username and password are correct
                 $_SESSION['login'] = $login;
-                header('Location: admin/nouveau_courrier.php');
+                header('Location: http://localhost:8080/admin/nouveau_courrier.php');
                 exit();
             } else {
-                header('Location: connexion.php?erreur=1'); // Incorrect username or password
+                header('Location: http://localhost:8080/connexion.php?erreur=1'); // Incorrect username or password
                 exit();
             }
         } else {
-            header('Location: connexion.php?erreur=2'); // Empty username or password
+            header('Location: http://localhost:8080/connexion.php?erreur=2'); // Empty username or password
             exit();
         }
     } else {
-        header('Location: connexion.php?erreur=2'); // Empty username or password
+        header('Location: http://localhost:8080/connexion.php?erreur=2'); // Empty username or password
         exit();
     }
 }
