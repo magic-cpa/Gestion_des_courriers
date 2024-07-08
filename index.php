@@ -45,8 +45,8 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<h1><a class="navbar-brand" href="index.php">GESTION <span>COURIIER</span><p class="logo_w3l_agile_caption">Controle le flux des courriers</p></a></h1>
-					</div>
+						
+					</div><h1><a class="navbar-brand" href="">GESTION <span>COURIIER</span><p class="logo_w3l_agile_caption">Controle le flux des courriers</p></a></h1>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
 						<nav class="menu menu--iris">
