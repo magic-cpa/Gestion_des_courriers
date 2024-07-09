@@ -26,7 +26,7 @@ function securisation($var)
     return $var;
 }
 
-// POUR LA PAGE D'INSCRIPTIION
+// POUR LA PAGE D'INSCRIPTION
 if (isset($_POST['envoyer'])) {
 
     if (isset($_POST['num_agent']) && isset($_POST['nom_agent']) && isset($_POST['tel_agent']) && isset($_POST['mail_agent'])  && isset($_POST['login']) && isset($_POST['password']) && isset($_POST['num_service'])) {
@@ -41,40 +41,43 @@ if (isset($_POST['envoyer'])) {
         $password_confirm = securisation($_POST['password_confirm']);
         $num_service = securisation($_POST['num_service']);
 
-        //les champs "nom" et "prenom" comporte au moins trois caractere lettre
+        //les champs "nom" et "prenom" comportent au moins trois caractere lettre
         if ($num_agent && $nom_agent && $tel_agent && $login && $mail_agent && $password && $password_confirm && $num_service) {
 
             if (strlen($password) <= 6) {
-                // verification la conformité des mot de passe
+                // verification de la conformité des mots de passe
                 if ($password_confirm == $password) {
 
                     $connexe = new mysqli("localhost", "root", "1234", "gestion_courrier");
 
-                    $sql = "INSERT INTO agent VALUES ('','$login',' $password','$num_agent','$nom_agent','$tel_agent','$mail_agent','non valide')";
+                    if ($connexe->connect_error) {
+                        die("Connection failed: " . $connexe->connect_error);
+                    }
 
-                    // $sql = "INSERT INTO agent VALUES ('','$num_agent', '$nom_agent', '$tel_agent', '$mail_agent', '$login', '$password', '$num_service','non valide')";
+                    // Prepare the SQL statement to avoid SQL injection
+                    $stmt = $connexe->prepare("INSERT INTO agent (login_agents, password_agents, num_agent, nom_agent, tel_agent, mail_agent, statut) VALUES (?, ?, ?, ?, ?, ?, 'non valide')");
+                    $stmt->bind_param("sssiss", $login, $password, $num_agent, $nom_agent, $tel_agent, $mail_agent);
 
-                    $res = $connexe->query($sql);
-
-                    $_SESSION['login'] = $login;
-                    
-                    header("Location: http://localhost:8080/");
-
-                    if (!$connexe->query($sql)) {
+                    if ($stmt->execute()) {
+                        $_SESSION['login'] = $login;
+                        header("Location: http://localhost:8080/");
+                        exit();
+                    } else {
                         printf("Message d'erreur: %s\n", $connexe->error);
                     }
 
-                    mysqli_close($connexe);
+                    $stmt->close();
+                    $connexe->close();
                 } else {
-                    $password_confirm_error = "mot de passe non conforme réesayer";
+                    $password_confirm_error = "mot de passe non conforme réessayez";
                     $isSucces = false;
                 }
             } else {
-                $carater_error = "mot de passe doit comporter au plus 6 caractere";
+                $caracter_error = "mot de passe doit comporter au plus 6 caractères";
                 $isSucces = false;
             }
         } else {
-            $messzge_error = "Aucun champs ne doit pas etre non remplir";
+            $message_error = "Aucun champ ne doit être non rempli";
             $isSucces = false;
         }
     }

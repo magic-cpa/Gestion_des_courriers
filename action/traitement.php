@@ -26,22 +26,26 @@ if (isset($_POST['connecter'])) {
         $login = mysqli_real_escape_string($db, htmlspecialchars($_POST['login']));
         $password = mysqli_real_escape_string($db, htmlspecialchars($_POST['password']));
 
+        // Trim input
+        $login = trim($login);
+        $password = trim($password);
+
         // Validate input
         if ($login !== "" && $password !== "") {
             // Query to check login credentials
-            $requete = "SELECT count(*) FROM agent WHERE login_agents = '$login' AND password_agents = '$password'";
+            $requete = "SELECT * FROM agent WHERE login_agents = '$login' AND password_agents = '$password'";
             $exec_requete = mysqli_query($db, $requete);
 
             if (!$exec_requete) {
                 die('Query failed: ' . mysqli_error($db));
             }
 
-            $reponse = mysqli_fetch_array($exec_requete);
-            $count = $reponse['count(*)'];
+            $reponse = mysqli_fetch_assoc($exec_requete);
 
-            if ($count != 0) { // Username and password are correct
-                $_SESSION['login'] = $login;
-                header('Location: http://localhost:8080/admin/nouveau_courrier.php');
+            if ($reponse) { 
+                // Store user information in session
+                $_SESSION['user'] = $reponse;
+                header('Location: http://localhost:8080/dashboard/');
                 exit();
             } else {
                 header('Location: http://localhost:8080/connexion.php?erreur=1'); // Incorrect username or password
