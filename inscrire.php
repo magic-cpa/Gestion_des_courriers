@@ -1,4 +1,15 @@
-﻿<!DOCTYPE html>
+﻿<?php
+if (session_status() == PHP_SESSION_NONE){
+    session_start();
+}
+
+if(isset($_SESSION)){
+    if(isset($_SESSION['user'])){
+        header('location: http://localhost:8080/dashboard/');
+    }
+}
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,7 +29,7 @@
             <?php if (!empty($carater_error)) { echo "<p class='alert alert-danger'>$carater_error</p>"; } ?>
         </div>
         <form action="/action/inscription.php" method="POST" ENCTYPE="multipart/form-data">
-            <div class="row">
+            <div class="form_inscr">
                 <div class="col-md-6 mb-3">
                     <input type="text" name="num_agent" class="form-control" placeholder="Votre numero d'agent svp" id="num_agent" required>
                 </div>

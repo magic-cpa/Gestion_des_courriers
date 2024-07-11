@@ -1,3 +1,15 @@
+<?php
+if (session_status() == PHP_SESSION_NONE){
+    session_start();
+}
+
+if(isset($_SESSION)){
+    if(isset($_SESSION['user'])){
+        header('location: http://localhost:8080/dashboard/');
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
