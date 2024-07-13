@@ -269,8 +269,8 @@ $db = mysqli_connect($server, $login, $pass, $dbname)
 							else
 							{
 							
-									$con=mysqli_connect("localhost","root","","gestion_courrier");
-									$check="SELECT * FROM _courrier WHERE ref_courrier = '$_POST[refe]'";
+									$con=mysqli_connect("localhost","root","1234","gestion_courrier");
+									$check="SELECT * FROM courrier WHERE ref_courrier = '$_POST[refe]'";
 									$rs = mysqli_query($con,$check);
 									$data = mysqli_fetch_array($rs, MYSQLI_NUM);
 									if($data[0] > 1) {
