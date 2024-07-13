@@ -31,29 +31,30 @@ if(isset($_SESSION)){
         <form action="/action/inscription.php" method="POST" ENCTYPE="multipart/form-data">
             <div class="form_inscr">
                 <div class="col-md-6 mb-3">
-                    <input type="text" name="num_agent" class="form-control" placeholder="Votre numero d'agent svp" id="num_agent" required>
+                    <label for="nom_agent">Nom</label>
+                    <input type="text" name="nom_agent" id="nom_agent" class="form-control" placeholder="Entrez votre nom" required>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <input type="text" name="nom_agent" class="form-control" placeholder="Votre nom d'agent svp" id="nom_agent" required>
+                    <label for="prenom_agent">Prénom</label>
+                    <input type="text" name="prenom_agent" id="prenom_agent" class="form-control" placeholder="Entrez votre prénom" required>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <input type="number" name="tel_agent" class="form-control" placeholder="Votre numero de telephone" id="tel_agent" required>
+                    <label for="email_agent">Email</label>
+                    <input type="email" name="email_agent" id="email_agent" class="form-control" placeholder="Entrez votre email" required>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <input type="email" name="mail_agent" class="form-control" placeholder="Votre mail" id="mail_agent" required>
+                    <label for="tel_agent">Téléphone</label>
+                    <input type="tel" name="tel_agent" id="tel_agent" class="form-control" placeholder="Entrez votre numéro de téléphone" required>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <input type="text" name="login" class="form-control" placeholder="Votre login" id="login" required>
+                    <label for="password">Mot de passe</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Entrez votre mot de passe" required>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <input type="password" name="password" class="form-control" placeholder="Votre mot de passe" id="Password" required>
+                    <label for="password_confirm">Confirmer le mot de passe</label>
+                    <input type="password" name="password_confirm" id="password_confirm" class="form-control" placeholder="Confirmer le mot de passe" required>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <input type="password" name="password_confirm" class="form-control" placeholder="Confirmer le mot de passe" id="password_confirm" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <input type="text" name="num_service" class="form-control" placeholder="Votre numero de service" id="num_service">
-                </div>
+            </div>
                 <div class="col-12 text-center">
                     <button type="submit" name="envoyer" class="btn btn-primary btn-lg">Envoyer</button>
                 </div>

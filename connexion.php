@@ -24,42 +24,38 @@ if(isset($_SESSION)){
     <link rel="stylesheet" href="fontawesome-free-5.15.4-web/fontawesome-free-5.15.4-web/css/all.min.css">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 </head>
-
-<form action="/action/traitement.php" method="POST">
-   <!-- <header>
+<body>
+    <form action="/action/traitement.php" method="POST">
+        <!-- <header>
          <div class="header">
             <h2><b id="red">GESTION DES COURRIERS</b></h2>
         </div> 
-    </header>-->
-    <?php
-    {/** Error display **/}
-    if (isset($_GET['erreur'])) {
+        </header>-->
+        <?php
+        {/** Error display **/}
+        if (isset($_GET['erreur'])) {
         $err = $_GET['erreur'];
             if ($err == 1) {
-                echo "<p style='color:#fff;margin-left:0rem;  width: 100%; background: red;text-align: center; padding:1rem; margin:0.5rem'>Login ou le mot de passe ne correspond à aucun compte</p>";
+                echo "<p style='color:#fff;margin-left:0rem;border-radius:3px;  width: 100%; background: red;text-align: center; padding:1rem; margin:0.5rem'>email ou mot de passe ne correspond à aucun compte</p>";
             } elseif ($err == 2) {
                 echo "<p style='color:#fff;  width: 100%; background: red;  padding:1rem; 
                 margin:0.5rem; margin-left:0rem;  text-align: center'>Remplissez les champs s'il vous plaît</p>";
             }
-    }
-    ?>
-    <body>
+        }
+        ?>
         <div class="fidele">
-         
             <div>
-                <!-- <i class="fas fa-user"></i> -->
-                <label for="">Nom agent</label>
-                <input type="text" name="login" placeholder="Entrer votre login" id="login">
+                <label for="login">Email</label>
+                <input type="email" name="email" placeholder="Entrer votre email" id="email" required>
             </div>
             <div>
-                <label for="">Mot de passe</label>
-                <input type="password" name="password" placeholder="Entrer votre mot de passe" id="password">
+                <label for="password">Mot de passe</label>
+                <input type="password" name="password" placeholder="Entrer votre mot de passe" id="password" required>
             </div>
             <div>
                 <button type="submit" name="connecter" id="submit">Connecter</button>
             </div>
         </div>
-
         <div class="flex">
             <div id="flex1">
                 <a id="pass" href="#">Mot de passe oublier</a>
@@ -69,7 +65,6 @@ if(isset($_SESSION)){
             </div>
         </div>
 
-    </body>
-</form>
-
+    </form>
+</body>
 </html>

@@ -21,19 +21,19 @@ session_start();
 
 // Check if the form was submitted
 if (isset($_POST['connecter'])) {
-    if (!empty($_POST['login']) && !empty($_POST['password'])) {
+    if (!empty($_POST['email']) && !empty($_POST['password'])) {
         // Sanitize and escape input
-        $login = mysqli_real_escape_string($db, htmlspecialchars($_POST['login']));
+        $email = mysqli_real_escape_string($db, htmlspecialchars($_POST['email']));
         $password = mysqli_real_escape_string($db, htmlspecialchars($_POST['password']));
 
         // Trim input
-        $login = trim($login);
+        $email = trim($email);
         $password = trim($password);
 
         // Validate input
-        if ($login !== "" && $password !== "") {
+        if ($email !== "" && $password !== "") {
             // Query to check login credentials
-            $requete = "SELECT * FROM agent WHERE login_agents = '$login' AND password_agents = '$password'";
+            $requete = "SELECT * FROM agent WHERE email_agent = '$email'";
             $exec_requete = mysqli_query($db, $requete);
 
             if (!$exec_requete) {
@@ -42,21 +42,24 @@ if (isset($_POST['connecter'])) {
 
             $reponse = mysqli_fetch_assoc($exec_requete);
 
-            if ($reponse) { 
+            if ($reponse && password_verify($password, $reponse['password'])) {
+                // Password verification successful
                 // Store user information in session
                 $_SESSION['user'] = $reponse;
                 header('Location: http://localhost:8080/dashboard/');
                 exit();
             } else {
-                header('Location: http://localhost:8080/connexion.php?erreur=1'); // Incorrect username or password
+                // Incorrect email or password
+                header('Location: http://localhost:8080/connexion.php?erreur=1');
                 exit();
             }
         } else {
-            header('Location: http://localhost:8080/connexion.php?erreur=2'); // Empty username or password
+            // Empty email or password
+            header('Location: http://localhost:8080/connexion.php?erreur=2');
             exit();
         }
     } else {
-        header('Location: http://localhost:8080/connexion.php?erreur=2'); // Empty username or password
+        header('Location: http://localhost:8080/connexion.php?erreur=2'); // Empty email or password
         exit();
     }
 }
