@@ -23,7 +23,7 @@ if(isset($_SESSION)){
 <body>
     <div class="container mt-5">
         <div class="tete text-center mb-4">
-            <h3 style="color:#000">S'inscrivez-vous tout en remplissant ces champs</h3>
+            <h2 class="text-center mb-5">Inscription Agent</h2>
             <?php if (!empty($password_confirm_error)) { echo "<p class='alert alert-danger'>$password_confirm_error</p>"; } ?>
             <?php if (!empty($messzge_error)) { echo "<p class='alert alert-danger'>$messzge_error</p>"; } ?>
             <?php if (!empty($carater_error)) { echo "<p class='alert alert-danger'>$carater_error</p>"; } ?>

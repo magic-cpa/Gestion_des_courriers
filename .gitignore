@@ -1,1 +1,9 @@
 
+
+# Ignore folders
+courriers/
+
+# Ignore other typical folders and files
+/vendor/
+/node_modules/
+/.env

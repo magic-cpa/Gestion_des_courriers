@@ -1,6 +1,6 @@
 ﻿<?php  
 session_start();  
-if(!isset($_SESSION["user"]))
+if(!isset($_SESSION['admin']))
 {
  header("location:index.php");
 }
@@ -13,6 +13,7 @@ if(!isset($_SESSION["user"]))
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Administrateur	</title>
     <!-- Bootstrap Styles-->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
@@ -36,7 +37,7 @@ if(!isset($_SESSION["user"]))
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"> <?php echo $_SESSION["user"]; ?> </a>
+                <a class="navbar-brand" href="#"> <?php var_dump($_SESSION["admin"]) ; ?> </a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -99,15 +100,15 @@ if(!isset($_SESSION["user"]))
                 </div>
                 <!-- /. ROW  -->
 				<?php
-						include ('db_.php');
+						include_once __DIR__.'/db_.php';
                         // $sql = "SELECT * FROM _courrier WHERE statut = 1 ORDER BY ref_courrier ASC";
-                        $sql = "SELECT * FROM _courrier ";
+                        $sql = "SELECT * FROM courrier";
 						$re = mysqli_query($con,$sql);
 						$c =0;
 						while($row=mysqli_fetch_array($re) )
 						{
-								$new = $row['statut'];
-								$cin = $row['date_time_act'];
+								// $new = $row['statut'];
+								// $cin = $row['date_time_act'];
 								$id = $row['id_courrier'];
 								if($new=="1")
 								{
@@ -117,12 +118,59 @@ if(!isset($_SESSION["user"]))
 								}
 						
 						}
-						
-									
-									
-
-						
 				?>
+    <!-- Modal -->
+    <div class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+
+        <div class="modal-container bg-white w-11/12 max-w-2xl mx-auto rounded shadow-lg z-50 overflow-y-auto">
+
+            <div class="modal-content py-4 text-left px-6">
+                <!--Title-->
+                <div class="flex justify-between items-center pb-3">
+                    <p class="text-2xl font-bold">Envoyer Courrier</p>
+                    <div class="modal-close cursor-pointer z-50" onclick="closeModal()">
+                        <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                            <path d="M14.53 4.53a.75.75 0 00-1.06-1.06L9 7.94 4.53 3.47a.75.75 0 10-1.06 1.06L7.94 9l-4.47 4.47a.75.75 0 001.06 1.06L9 10.06l4.47 4.47a.75.75 0 001.06-1.06L10.06 9l4.47-4.47z"/>
+                        </svg>
+                    </div>
+                </div>
+                <!--Body-->
+                <form action="/admin/action/send_courrier.php" method="post" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label for="titre_cour" class="block text-gray-600 text-sm font-medium mb-2">Titre Courrier</label>
+                        <input type="text" id="titre_cour" name="titre_cour" class="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" required>
+                    </div>
+                    <div class="mb-4">
+                    <label for="agent_recepteur" class="block text-gray-600 text-sm font-medium mb-2">agent recepteur du Courrier</label>
+                    <select id="agent_recepteur" name="agent_recepteur" class="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" required>
+                    <?php
+                        $sql = "SELECT * FROM agent";
+					    $result = mysqli_query($con,$sql);
+                        if (mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_assoc($result)) {
+                            echo '<option value="' . $row['id_agent'] . '">' . $row['nom_agent']. ' ' . $row['prenom_agent'] . '</option>';
+                        }
+                        } else {
+                            echo '<option value="">No agents available</option>';
+                        }
+                    ?>
+                </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="file_cour" class="block text-gray-600 text-sm font-medium mb-2">Fichier Courrier</label>
+                        <input type="file" id="file_cour" name="file_cour" class="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" required>
+                    </div>
+                    <button type="submit" name="send" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">Envoyer</button>
+                </form>
+
+                <!--Footer-->
+                <div class="flex justify-end pt-2">
+                    <button class="modal-close px-4 bg-gray-500 p-3 rounded-lg text-white hover:bg-gray-400" onclick="closeModal()">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 					<div class="row">
                 <div class="col-md-12">
@@ -131,9 +179,14 @@ if(!isset($_SESSION["user"]))
                             
                         </div>
                         <div class="panel-body">
+                            <div class="cont-btn-add" style="margin: 0.3rem;">
+                                <button class="btn btn-default" type="button" onclick="openModal()">
+								 Envoyer Courrier  
+								</button>
+                            </div>
                             <div class="panel-group" id="accordion">
 							
-							<div class="panel panel-primary">
+							<div class="panel panel-primary">             
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
                                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
@@ -166,7 +219,7 @@ if(!isset($_SESSION["user"]))
                                         
 									<?php
                                     
-									$tsql = "select * from _courrier";
+									$tsql = "SELECT * FROM courrier";
 									$tre = mysqli_query($con,$tsql);
 									while($trow=mysqli_fetch_array($tre) )
 									{	
@@ -200,8 +253,7 @@ if(!isset($_SESSION["user"]))
                                     </div>
                                 </div>
 								<?php
-								
-								$rsql = "SELECT * FROM `_courrier`";
+								$rsql = "SELECT * FROM `courrier`";
 								$rre = mysqli_query($con,$rsql);
 								$r =0;
 								while($row=mysqli_fetch_array($rre) )
@@ -212,10 +264,7 @@ if(!isset($_SESSION["user"]))
 											$r = $r + 1;
 											
 										}
-										
-								
 								}
-						
 								?>
                                 <div class="panel panel-info">
                                     <div class="panel-heading">
@@ -231,7 +280,7 @@ if(!isset($_SESSION["user"]))
                                     <div id="collapseOne" class="panel-collapse collapse" style="height: 0px;">
                                         <div class="panel-body">
 										<?php
-										$msql = "SELECT * FROM `_courrier`";
+										$msql = "SELECT * FROM `courrier`";
 										$mre = mysqli_query($con,$msql);
 										
 										while($mrow=mysqli_fetch_array($mre) )
@@ -255,25 +304,17 @@ if(!isset($_SESSION["user"]))
 														</div>
 													</div>	
 											</div>";
-															
-												
-					
-				
-												
+
 											}
-											
-									
 										}
 										?>
-                                           
+                                        
 										</div>
 										
                                     </div>
-									
                                 </div>
                                 <?php
-								
-								$fsql = "SELECT * FROM agent WHERE statut = 'non valide'";
+								$fsql = "SELECT * FROM agent";
 								$fre = mysqli_query($con,$fsql);
 								$f =0;
 								while($row=mysqli_fetch_array($fre) )
@@ -281,7 +322,6 @@ if(!isset($_SESSION["user"]))
 										$f = $f + 1;
 								
 								}
-						
 								?>
                                 <div class="panel panel-danger">
                                     <div class="panel-heading">
@@ -302,8 +342,9 @@ if(!isset($_SESSION["user"]))
                                         <tr>
                                             <th>#</th>
                                             <th>Nom</th>
-                                            <th>Numero</th>
-											<th>login</th>
+                                            <th>prenom</th>
+                                            <th>Numero tel</th>
+											<th>email</th>
                                             <th>Permission status</th>
                                             <th></th>
                                             
@@ -321,12 +362,12 @@ if(!isset($_SESSION["user"]))
 											echo"<tr>
 												<th>".$crow['id_agent']."</th>
 												<th>".$crow['nom_agent']."</th>
-												<th>".$crow['num_agent']." </th>
-												<th>".$crow['login_agents']." </th>
-                                                <th>".$crow['statut']."</th>
+                                                <th>".$crow['prenom_agent']."</th>
+                                                <th>".$crow['tel_agent']."</th>
+                                                <th>".$crow['email_agent']."</th>
+                                                <th>"./*$crow['statut'].*/"</th>
                                                 
                                                 <th><a href='insc.php?ridz=".$crow['id_agent']." ' class='btn btn-primary'>Valider</a></th>
-												
 												</tr>";
 										
 									
@@ -386,14 +427,6 @@ if(!isset($_SESSION["user"]))
                                 </div>
                             </div>
                         </div>
-				
-				<!--DEMO END-->
-				
-										
-                    
-
-                <!-- /. ROW  -->
-				
             </div>
             <!-- /. PAGE INNER  -->
         </div>
@@ -403,6 +436,23 @@ if(!isset($_SESSION["user"]))
     </div>
     <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
+    <script defer>
+        function openModal() {
+            const model = document.querySelector('.modal');
+            document.querySelector('.modal').classList.add('opacity-100');
+            document.querySelector('.modal').classList.remove('opacity-0');
+            document.querySelector('.modal').classList.remove('pointer-events-none');
+            model.style.display = 'flex';
+            document.querySelector('body').classList.add('modal-active');
+        }
+
+        function closeModal() {
+            document.querySelector('.modal').classList.add('opacity-0');
+            document.querySelector('.modal').classList.remove('opacity-100');
+            document.querySelector('.modal').classList.add('pointer-events-none');
+            document.querySelector('body').classList.remove('modal-active');
+        }
+    </script>
     <!-- jQuery Js -->
     <script src="assets/js/jquery-1.10.2.js"></script>
     <!-- Bootstrap Js -->

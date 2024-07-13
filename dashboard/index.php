@@ -115,12 +115,12 @@ if (isset($_SESSION['user'])) {
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item">
                 <i class="ti-settings text-primary"></i>
-                Settings
+                Parametre
               </a>
               <form id="logoutForm" action="/action/logout.php" method="POST" style="display: inline;">
                 <button type="submit" class="dropdown-item">
                   <i class="ti-power-off text-primary"></i>
-                  Logout
+                  Se deconecter
                 </button>
               </form>
             </div>

@@ -36,6 +36,10 @@ CREATE TABLE `admin` (
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+INSERT INTO `admin` (`email`, `name`, `password`, `created_at`, `updated_at`)
+VALUES ('admin@gmail.com', 'Admin', '$2y$10$GQqheqSmGW1ioRKQM0vsbuRHp4A0uJVtvQlYl68PFRrijPrU.s69y', NOW(), NOW());
+
+
 -- --------------------------------------------------------
 
 --
@@ -113,6 +117,9 @@ CREATE TABLE `notification` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `close_not` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `notification`
+MODIFY COLUMN `id_cour` int(11) DEFAULT NULL;
 
 --
 -- Indexes for dumped tables
