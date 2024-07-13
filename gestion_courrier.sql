@@ -1,233 +1,203 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.14
--- http://www.phpmyadmin.net
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
 --
--- Client :  127.0.0.1
--- Généré le :  Jeu 7 juillet 2024 à 00:21
--- Version du serveur :  5.6.17
--- Version de PHP :  8.0
+-- Host: 127.0.0.1
+-- Generation Time: Jul 13, 2024 at 01:11 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `gestion_courrier`
+-- Database: `gestion_courrier`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `agent`
+-- Table structure for table `admin`
 --
 
-CREATE TABLE IF NOT EXISTS `agent` (
-  `id_agent` int(11) NOT NULL AUTO_INCREMENT,
-  `login_agents` varchar(100) NOT NULL,
-  `password_agents` varchar(100) NOT NULL,
-  `num_agent` varchar(100) NOT NULL,
+CREATE TABLE `admin` (
+  `id` int(5) UNSIGNED NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `agent`
+--
+
+CREATE TABLE `agent` (
+  `id_agent` int(11) NOT NULL,
   `nom_agent` varchar(100) NOT NULL,
-  `tel_agent` int(8) NOT NULL,
-  `mail_agent` varchar(30) NOT NULL,
-  `statut` varchar(11) NOT NULL,
-  PRIMARY KEY (`id_agent`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
-
---
--- Contenu de la table `agent`
---
-
-INSERT INTO `agent` (`id_agent`, `login_agents`, `password_agents`, `num_agent`, `nom_agent`, `tel_agent`, `mail_agent`, `statut`) VALUES
-(1, 'fidele', 'fidele', 'fidele', '', 0, '', 'valide'),
-(2, 'admin', 'admin', 'admin', '', 0, '', 'valide'),
-(3, 'gbedji', ' gbedji', 'gbedji', 'gbedji', 45678, 'fidele@GMAIL.co', 'valide'),
-(4, 'gbedji', ' gbedji', 'gbedji', 'gbedji', 45678, 'fidele@GMAIL.co', 'non valide'),
-(5, 'APPO', ' APPO', 'aPP', 'gbedji', 309, 'gbedji@gmail.com', 'non valide'),
-(6, 'APPO', ' APPO', 'aPP', 'gbedji', 309, 'gbedji@gmail.com', 'non valide');
+  `prenom_agent` varchar(100) NOT NULL,
+  `email_agent` varchar(100) NOT NULL,
+  `tel_agent` varchar(15) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `logical_delete` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `contact`
+-- Table structure for table `contact`
 --
 
-CREATE TABLE IF NOT EXISTS `contact` (
+CREATE TABLE `contact` (
   `fullname` varchar(100) NOT NULL,
   `phoneno` varchar(300) NOT NULL,
   `email` varchar(300) NOT NULL,
   `cdate` varchar(30) NOT NULL,
   `approval` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `destinataire`
+-- Table structure for table `courrier`
 --
 
-CREATE TABLE IF NOT EXISTS `destinataire` (
-  `id_destinataire` int(100) NOT NULL AUTO_INCREMENT,
-  `Nom_destiantaire` varchar(300) NOT NULL,
-  `Adresse` varchar(300) NOT NULL,
-  PRIMARY KEY (`id_destinataire`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
-
---
--- Contenu de la table `destinataire`
---
-
-INSERT INTO `destinataire` (`id_destinataire`, `Nom_destiantaire`, `Adresse`) VALUES
-(1, 'PHENIX', 'COTNOU'),
-(2, 'OSE', 'PARAKOU'),
-(3, 'PHENIX', 'COTNOU'),
-(4, 'OSE', 'PARAKOU');
+CREATE TABLE `courrier` (
+  `id_courrier` int(11) NOT NULL,
+  `file_cour` varchar(255) NOT NULL,
+  `titre_cour` varchar(255) NOT NULL,
+  `logical_delete` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user`
+-- Table structure for table `courrier_agent`
 --
 
-CREATE TABLE IF NOT EXISTS `user` (
-  `id_user` int(11) NOT NULL AUTO_INCREMENT,
-  `nom_prenom` varchar(300) NOT NULL,
-  `user_name` varchar(300) NOT NULL,
-  `password_user` varchar(30) NOT NULL,
-  PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Contenu de la table `user`
---
-
-INSERT INTO `user` (`id_user`, `nom_prenom`, `user_name`, `password_user`) VALUES
-(1, 'fidele', 'fidele', 'fidele'),
-(2, 'admin', 'admin', 'admin');
+CREATE TABLE `courrier_agent` (
+  `id_cour_ag` int(11) NOT NULL,
+  `id_cour` int(11) NOT NULL,
+  `id_ag` int(11) NOT NULL,
+  `id_admin` int(5) UNSIGNED NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `_courrier`
+-- Table structure for table `notification`
 --
 
-CREATE TABLE IF NOT EXISTS `_courrier` (
-  `num_courrier` varchar(100) NOT NULL,
-  `objet_courrier` varchar(300) NOT NULL,
-  `date_courrier` date NOT NULL,
-  `ref_courrier` varchar(30) NOT NULL,
-  `type_courrier` varchar(100) NOT NULL,
-  `date_time_act` varchar(300) NOT NULL,
-  `id_courrier` int(11) NOT NULL AUTO_INCREMENT,
-  `expe` varchar(400) NOT NULL,
-  `desti` varchar(300) NOT NULL,
-  `desc` text NOT NULL,
-  `nom_usager` varchar(400) NOT NULL,
-  `titre` varchar(300) NOT NULL,
-  `nom` varchar(300) NOT NULL,
-  `prenom` varchar(30) NOT NULL,
-  `email` varchar(30) NOT NULL,
-  `type_carte` varchar(30) NOT NULL,
-  `num_carte` varchar(45) NOT NULL,
-  `tel` int(100) NOT NULL,
-  `odjet` text NOT NULL,
-  `adress_fichier` varchar(300) NOT NULL,
-  `statut` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id_courrier`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+CREATE TABLE `notification` (
+  `id_not` int(11) NOT NULL,
+  `id_cour` int(11) NOT NULL,
+  `contenu_not` text NOT NULL,
+  `category` varchar(100) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `close_not` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Contenu de la table `_courrier`
+-- Indexes for dumped tables
 --
 
-INSERT INTO `_courrier` (`num_courrier`, `objet_courrier`, `date_courrier`, `ref_courrier`, `type_courrier`, `date_time_act`, `id_courrier`, `expe`, `desti`, `desc`, `nom_usager`, `titre`, `nom`, `prenom`, `email`, `type_carte`, `num_carte`, `tel`, `odjet`, `adress_fichier`, `statut`) VALUES
-('', 'Lettre', '0000-00-00', 'REF 4539589', 'Entrant', '', 7, 'FIDELE', 'COTNOU', 'Lettre', 'Gbedjie', 'Dr.', 'WINSOU', 'GBEDJI FIDELE', 'fidelewinsou661@gmail.com', 'Sri Lankan', '464758456858', 77887987, 'Lettre', 'License.pdf', 0),
-('', 'ContrÃ´le des marchÃ©', '2018-01-23', 'REF 45395B89', 'Entrant', '18-01-23 02:24:38', 8, 'SOGEA', 'PARAKOU', 'ContrÃ´le des marchÃ©', 'usager', 'Mrs.', 'AGBO', 'FERNAND', 'kkk@H', 'Non Sri Lankan ', '574949', 394949848, 'ContrÃ´le des marchÃ©', 'License.pdf', 0),
-('', 'Raz', '2018-01-23', 'REF 453767889', 'Sortant Room', '18-01-23 11:21:10', 9, 'SOGEA', 'PARAKOU', 'Raz', 'Gbedjie', 'Dr.', 'DOGBO', 'Phampile', 'fidelewinsou661@gmail.com', 'Non Sri Lankan ', '574949', 0, 'Raz', '', 0);
-
--- --------------------------------------------------------
+--
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`);
 
 --
--- Structure de la table `_document`
+-- Indexes for table `agent`
 --
-
-CREATE TABLE IF NOT EXISTS `_document` (
-  `id_document` int(11) NOT NULL AUTO_INCREMENT,
-  `_document` varchar(400) NOT NULL,
-  `reference` varchar(400) NOT NULL,
-  PRIMARY KEY (`id_document`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
+ALTER TABLE `agent`
+  ADD PRIMARY KEY (`id_agent`);
 
 --
--- Structure de la table `_service`
+-- Indexes for table `courrier`
 --
-
-CREATE TABLE IF NOT EXISTS `_service` (
-  `id_service` int(11) NOT NULL AUTO_INCREMENT,
-  `num_service` varchar(300) NOT NULL,
-  `lib_service` varchar(300) NOT NULL,
-  PRIMARY KEY (`id_service`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+ALTER TABLE `courrier`
+  ADD PRIMARY KEY (`id_courrier`);
 
 --
--- Contenu de la table `_service`
+-- Indexes for table `courrier_agent`
 --
-
-INSERT INTO `_service` (`id_service`, `num_service`, `lib_service`) VALUES
-(1, 'service', 'service'),
-(2, 'services', 'service');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `_usager`
---
-
-CREATE TABLE IF NOT EXISTS `_usager` (
-  `id_usager` int(11) NOT NULL AUTO_INCREMENT,
-  `num_usager` varchar(100) NOT NULL,
-  `nom_usager` varchar(300) NOT NULL,
-  `tel_usager` int(9) NOT NULL,
-  `mail_usager` varchar(30) NOT NULL,
-  `adresse_usager` varchar(30) NOT NULL,
-  PRIMARY KEY (`id_usager`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+ALTER TABLE `courrier_agent`
+  ADD PRIMARY KEY (`id_cour_ag`),
+  ADD KEY `id_cour` (`id_cour`),
+  ADD KEY `id_ag` (`id_ag`),
+  ADD KEY `id_admin` (`id_admin`);
 
 --
--- Contenu de la table `_usager`
+-- Indexes for table `notification`
 --
-
-INSERT INTO `_usager` (`id_usager`, `num_usager`, `nom_usager`, `tel_usager`, `mail_usager`, `adresse_usager`) VALUES
-(1, '333', 'Gbedjie', 3453, 'fidele@mail.com', 'fiyftghj'),
-(2, 'usager', 'usager', 373633, 'fgff@gmail.com', 'fffffffffffff'),
-(3, 'usager', 'usager', 373633, 'fgff@gmail.com', 'fffffffffffff');
-
--- --------------------------------------------------------
+ALTER TABLE `notification`
+  ADD PRIMARY KEY (`id_not`),
+  ADD KEY `id_cour` (`id_cour`);
 
 --
--- Structure de la table `_usager_service`
+-- AUTO_INCREMENT for dumped tables
 --
 
-CREATE TABLE IF NOT EXISTS `_usager_service` (
-  `id_usager_service` int(11) NOT NULL,
-  `num_service` int(11) NOT NULL,
-  `num_usager` int(11) NOT NULL,
-  `nom_usager` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+--
+-- AUTO_INCREMENT for table `agent`
+--
+ALTER TABLE `agent`
+  MODIFY `id_agent` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Contenu de la table `_usager_service`
+-- AUTO_INCREMENT for table `courrier`
+--
+ALTER TABLE `courrier`
+  MODIFY `id_courrier` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `courrier_agent`
+--
+ALTER TABLE `courrier_agent`
+  MODIFY `id_cour_ag` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `notification`
+--
+ALTER TABLE `notification`
+  MODIFY `id_not` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
 --
 
-INSERT INTO `_usager_service` (`id_usager_service`, `num_service`, `num_usager`, `nom_usager`) VALUES
-(0, 1, 1, 1),
-(0, 333, 0, 0);
+--
+-- Constraints for table `courrier_agent`
+--
+ALTER TABLE `courrier_agent`
+  ADD CONSTRAINT `courrier_agent_ibfk_1` FOREIGN KEY (`id_cour`) REFERENCES `courrier` (`id_courrier`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `courrier_agent_ibfk_2` FOREIGN KEY (`id_ag`) REFERENCES `agent` (`id_agent`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `courrier_agent_ibfk_3` FOREIGN KEY (`id_admin`) REFERENCES `admin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `notification`
+--
+ALTER TABLE `notification`
+  ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`id_cour`) REFERENCES `courrier` (`id_courrier`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
