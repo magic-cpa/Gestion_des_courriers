@@ -49,7 +49,7 @@ label {
     margin-bottom: 5px;
 }
 
-input[type="text"],
+input[type="email"],
 input[type="password"] {
     width: calc(100% - 20px);
     padding: 10px;
@@ -96,4 +96,7 @@ input[type="password"] {
 
 .links-container a:hover {
     color: #1a3dab;
+}
+#flex2,#flex1{
+    padding: 0.5rem;
 }
