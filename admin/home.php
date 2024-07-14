@@ -89,8 +89,6 @@ if(!isset($_SESSION['admin']))
         <!-- contenu -->
         <div id="page-wrapper">
             <div id="page-inner">
-
-
                 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
@@ -102,25 +100,18 @@ if(!isset($_SESSION['admin']))
 				<?php
 						include_once __DIR__.'/db_.php';
                         // $sql = "SELECT * FROM _courrier WHERE statut = 1 ORDER BY ref_courrier ASC";
-                        $sql = "SELECT * FROM courrier";
-						$re = mysqli_query($con,$sql);
-						$c =0;
-						while($row=mysqli_fetch_array($re) )
-						{
-								// $new = $row['statut'];
-								// $cin = $row['date_time_act'];
-								$id = $row['id_courrier'];
-								if($new=="1")
-								{
-									$c = $c + 1;
-									
-								
-								}
-						
-						}
+                        $rsql = "SELECT COUNT(*) as courrier_count FROM `courrier` WHERE logical_delete = 0";
+                        $result = mysqli_query($con, $rsql);
+
+                        if ($result) {
+                            $row = mysqli_fetch_assoc($result);
+                            $courrier_count = $row['courrier_count'];
+                        } else {
+                            $courrier_count = 0; 
+                        }
 				?>
     <!-- Modal -->
-    <div class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
+    <div id="courrierModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
         <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
 
         <div class="modal-container bg-white w-11/12 max-w-2xl mx-auto rounded shadow-lg z-50 overflow-y-auto">
@@ -129,7 +120,7 @@ if(!isset($_SESSION['admin']))
                 <!--Title-->
                 <div class="flex justify-between items-center pb-3">
                     <p class="text-2xl font-bold">Envoyer Courrier</p>
-                    <div class="modal-close cursor-pointer z-50" onclick="closeModal()">
+                    <div class="modal-close cursor-pointer z-50" onclick="closeModal('courrierModal')">
                         <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
                             <path d="M14.53 4.53a.75.75 0 00-1.06-1.06L9 7.94 4.53 3.47a.75.75 0 10-1.06 1.06L7.94 9l-4.47 4.47a.75.75 0 001.06 1.06L9 10.06l4.47 4.47a.75.75 0 001.06-1.06L10.06 9l4.47-4.47z"/>
                         </svg>
@@ -145,7 +136,7 @@ if(!isset($_SESSION['admin']))
                     <label for="agent_recepteur" class="block text-gray-600 text-sm font-medium mb-2">agent recepteur du Courrier</label>
                     <select id="agent_recepteur" name="agent_recepteur" class="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" required>
                     <?php
-                        $sql = "SELECT * FROM agent";
+                        $sql = "SELECT * FROM agent WHERE logical_delete = 0";
 					    $result = mysqli_query($con,$sql);
                         if (mysqli_num_rows($result) > 0) {
                             while ($row = mysqli_fetch_assoc($result)) {
@@ -166,23 +157,22 @@ if(!isset($_SESSION['admin']))
 
                 <!--Footer-->
                 <div class="flex justify-end pt-2">
-                    <button class="modal-close px-4 bg-gray-500 p-3 rounded-lg text-white hover:bg-gray-400" onclick="closeModal()">Fermer</button>
+                    <button class="modal-close px-4 bg-gray-500 p-3 rounded-lg text-white hover:bg-gray-400" onclick="closeModal('courrierModal')">Fermer</button>
                 </div>
             </div>
         </div>
     </div>
 
-					<div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            
-                        </div>
-                        <div class="panel-body">
-                            <div class="cont-btn-add" style="margin: 0.3rem;">
-                                <button class="btn btn-default" type="button" onclick="openModal()">
-								 Envoyer Courrier  
-								</button>
+		<div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                    </div>
+                    <div class="panel-body">
+                        <div class="cont-btn-add" style="margin: 0.3rem;">
+                            <button class="btn btn-default" type="button" onclick="openModal('courrierModal')">
+								Envoyer Courrier  
+							</button>
                             </div>
                             <div class="panel-group" id="accordion">
 							
@@ -191,7 +181,7 @@ if(!isset($_SESSION['admin']))
                                         <h4 class="panel-title">
                                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
 											<button class="btn btn-default" type="button">
-												 Nouveau Courrier  <span class="badge"><?php echo $c ; ?></span>
+                                            List des Courriers  <span class="badge"><?php echo $courrier_count ; ?></span>
 											</button>
 											</a>
                                         </h4>
@@ -205,43 +195,52 @@ if(!isset($_SESSION['admin']))
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Date Dépot</th>
-                                            <th>Réference</th>
-                                            <th>Objet</th>
-											<th>Description</th>
-											<th>Expediteur</th>
-											<th>Destinataire</th>	
-                                            <th></th>									
+                                            <th>ID courrier</th>
+                                            <th>ID agent</th>
+                                            <th>Nom agent recepteur</th>
+                                            <th>prenom agent recepteur</th>
+                                            <th>Titre Courrier</th>
+                                            <th>Fichier</th>
+											<th>iD Expediteur</th>
+                                            <th>Nom Expediteur</th>
+                                            <th>Date evoie</th>								
                                         </tr>
                                     </thead>
                                     <tbody>
                                         
-									<?php
-                                    
-									$tsql = "SELECT * FROM courrier";
-									$tre = mysqli_query($con,$tsql);
-									while($trow=mysqli_fetch_array($tre) )
-									{	
-										$co =$trow['statut']; 
-										if($co=="1")
-										{
-											echo"<tr>
-												<th>".$trow['id_courrier']."</th>
-												<th>".$trow['date_courrier']."</th>
-												<th>".$trow['ref_courrier']."</th>
-												<th>".$trow['objet_courrier']."</th>
-												<th>".$trow['desc']."</th>
-												<th>".$trow['expe']."</th>
-												<th>".$trow['desti']."</th>
-																								
-												<th><a href='roombook.php?rid=".$trow['id_courrier']." ' class='btn btn-primary'>Action</a></th>
-												</tr>";
-										}	
-									
-									}
-									?>
-                                        
+								<?php
+								$rsql = "SELECT c.id_courrier, c.file_cour, c.titre_cour, a.id_agent,
+                            a.nom_agent, a.prenom_agent,ca.id_admin,ad.name AS admin_name, ca.created_at AS date_envoi
+                            FROM
+                                courrier_agent ca
+                            JOIN
+                                courrier c ON ca.id_cour = c.id_courrier
+                            JOIN
+                                agent a ON ca.id_ag = a.id_agent
+                            JOIN
+                                admin ad ON ca.id_admin = ad.id
+                            WHERE
+                                c.logical_delete = 0 AND a.logical_delete = 0;";
+									$result = mysqli_query($con, $rsql);
+
+                                    if ($result) {
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            echo "<tr>";
+                                            echo "<td>{$row['id_courrier']}</td>";
+                                            echo "<td>{$row['id_agent']}</td>";
+                                            echo "<td>{$row['nom_agent']}</td>";
+                                            echo "<td>{$row['prenom_agent']}</td>";
+                                            echo "<td>{$row['titre_cour']}</td>";
+                                            echo "<td><a href='/Gestion_des_courriers/courriers/{$row['file_cour']}' target='_blank'>{$row['file_cour']}</a></td>";
+                                            echo "<td>{$row['id_admin']}</td>";
+                                            echo "<td>{$row['admin_name']}</td>";
+                                            echo "<td>{$row['date_envoi']}</td>";
+                                            echo "</tr>";
+                                        }
+                                    } else {
+                                        echo "<tr><td colspan='8'>Aucun courrier trouvé.</td></tr>";
+                                    }
+                                    ?>
                                     </tbody>
                                 </table>
 								
@@ -253,25 +252,21 @@ if(!isset($_SESSION['admin']))
                                     </div>
                                 </div>
 								<?php
-								$rsql = "SELECT * FROM `courrier`";
-								$rre = mysqli_query($con,$rsql);
-								$r =0;
-								while($row=mysqli_fetch_array($rre) )
-								{		
-										$br = $row['statut'];
-										if($br=="0")
-										{
-											$r = $r + 1;
-											
-										}
-								}
+								$rsql = "SELECT COUNT(*) as courrier_count FROM `courrier` WHERE logical_delete = 0";
+                                $result = mysqli_query($con, $rsql);
+								if ($result) {
+                                    $row = mysqli_fetch_assoc($result);
+                                    $r = $row['courrier_count'];
+                                } else {
+                                    $r= 0; 
+                                }
 								?>
                                 <div class="panel panel-info">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
                                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed">
 											<button class="btn btn-primary" type="button">
-												 Courrier Traiter  <span class="badge"><?php echo $r ; ?></span>
+												 List des Notifications  <span class="badge"><?php echo $r ; ?></span>
 											</button>
 											
 											</a>
@@ -280,47 +275,45 @@ if(!isset($_SESSION['admin']))
                                     <div id="collapseOne" class="panel-collapse collapse" style="height: 0px;">
                                         <div class="panel-body">
 										<?php
-										$msql = "SELECT * FROM `courrier`";
+										$msql = "SELECT * FROM `courrier` WHERE logical_delete = 0";
 										$mre = mysqli_query($con,$msql);
 										
-										while($mrow=mysqli_fetch_array($mre) )
-										{		
-											$br = $mrow['statut'];
-											if($br=="0")
-											{
-												$fid = $mrow['id_courrier'];
+										// while($mrow=mysqli_fetch_array($mre) )
+										// {		
+										// 	$br = $mrow['statut'];
+										// 	if($br=="0")
+										// 	{
+										// 		$fid = $mrow['id_courrier'];
 												 
-											echo"<div class='col-md-3 col-sm-12 col-xs-12'>
-													<div class='panel panel-primary text-center no-boder bg-color-blue'>
-														<div class='panel-body'>
-															<i class='fa fa-users fa-5x'></i>
-															<h3>".$mrow['ref_courrier']."</h3>
-														</div>
-														<div class='panel-footer back-footer-blue'>
-														<a><button  class='btn btn-primary btn' data-toggle='modal' data-target='#myModal'>
-													Show
-													</button></a>
-															".$mrow['expe']."
-														</div>
-													</div>	
-											</div>";
+										// 	echo"<div class='col-md-3 col-sm-12 col-xs-12'>
+										// 			<div class='panel panel-primary text-center no-boder bg-color-blue'>
+										// 				<div class='panel-body'>
+										// 					<i class='fa fa-users fa-5x'></i>
+										// 					<h3>".$mrow['ref_courrier']."</h3>
+										// 				</div>
+										// 				<div class='panel-footer back-footer-blue'>
+										// 				<a><button  class='btn btn-primary btn' data-toggle='modal' data-target='#myModal'>
+										// 			Show
+										// 			</button></a>
+										// 					".$mrow['expe']."
+										// 				</div>
+										// 			</div>	
+										// 	</div>";
 
-											}
-										}
+										// 	}
+										// }
 										?>
-                                        
 										</div>
-										
                                     </div>
                                 </div>
+
                                 <?php
-								$fsql = "SELECT * FROM agent";
+								$fsql = "SELECT * FROM `agent` WHERE logical_delete = 0";
 								$fre = mysqli_query($con,$fsql);
 								$f =0;
 								while($row=mysqli_fetch_array($fre) )
 								{
 										$f = $f + 1;
-								
 								}
 								?>
                                 <div class="panel panel-danger">
@@ -328,14 +321,19 @@ if(!isset($_SESSION['admin']))
                                         <h4 class="panel-title">
                                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed">
 											<button class="btn btn-primary" type="button">
-												 Inscription non validée  <span class="badge"><?php echo $f ; ?></span>
+												 List des agents  <span class="badge"><?php echo $f ; ?></span>
 											</button>
 											</a>
                                         </h4>
                                     </div>
-                                    <div id="collapseThree" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <div class="panel-body">
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="panel-body">
+                                    <div class="m-2 flex justify-end">
+                                        <button class="btn btn-primary" type="button" onclick="openModal('agentModal')">
+											<span class="badge">ajouter nouveau agent</span>
+										 </button>
+                                    </div>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -347,8 +345,6 @@ if(!isset($_SESSION['admin']))
 											<th>email</th>
                                             <th>Permission status</th>
                                             <th></th>
-                                            
-											
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -369,8 +365,6 @@ if(!isset($_SESSION['admin']))
                                                 
                                                 <th><a href='insc.php?ridz=".$crow['id_agent']." ' class='btn btn-primary'>Valider</a></th>
 												</tr>";
-										
-									
 									}
 									?>
                                         
@@ -388,8 +382,62 @@ if(!isset($_SESSION['admin']))
                     </div>
                 </div>
             </div>
-            
-			
+
+        <!-- New Agent Modal -->
+        <div id="agentModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+
+        <div class="modal-container bg-white w-11/12 md:max-w-2xl mx-auto rounded shadow-lg z-50 overflow-y-auto">
+
+            <div class="modal-content py-4 text-left px-6">
+                <!--Title-->
+                <div class="flex justify-between items-center pb-3">
+                    <p class="text-2xl font-bold">Ajouter Nouveau Agent</p>
+                    <div class="modal-close cursor-pointer z-50" onclick="closeModal('agentModal')">
+                        <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                            <path d="M14.53 4.53a.75.75 0 00-1.06-1.06L9 7.94 4.53 3.47a.75.75 0 10-1.06 1.06L7.94 9l-4.47 4.47a.75.75 0 001.06 1.06L9 10.06l4.47 4.47a.75.75 0 001.06-1.06L10.06 9l4.47-4.47z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!--Body-->
+                <form action="/admin/action/add_agent.php" method="post">
+                    <div class="mb-4">
+                        <label for="name" class="block text-gray-600 text-sm font-medium mb-2">Nom</label>
+                        <input type="text" id="name" name="name" class="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="prenom" class="block text-gray-600 text-sm font-medium mb-2">Prénom</label>
+                        <input type="text" id="prenom" name="prenom" class="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="numero_tel" class="block text-gray-600 text-sm font-medium mb-2">Numéro de Téléphone</label>
+                        <input type="tel" id="numero_tel" name="numero_tel" class="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-600 text-sm font-medium mb-2">Email</label>
+                        <input type="email" id="email" name="email" class="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="block text-gray-600 text-sm font-medium mb-2">Mot de Passe</label>
+                        <input type="password" id="password" name="password" class="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" placeholder="Entrez votre mot de passe" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password_confirm" class="block text-gray-600 text-sm font-medium mb-2">Mot de Passe</label>
+                        <input type="password" name="password_confirm" id="password_confirm" class="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" placeholder="Confirmer le mot de passe" required>
+                    </div>
+                    <button type="submit" name="add" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md 
+                    hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">Ajouter</button>
+                </form>
+
+                <!--Footer-->
+                <div class="flex justify-end pt-2">
+                    <button class="modal-close px-4 bg-gray-500 p-3 rounded-lg text-white hover:bg-gray-400" onclick="closeModal('agentModal')">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 				<!-- DEOMO-->
 				<div class='panel-body'>
                             <button class='btn btn-primary btn' data-toggle='modal' data-target='#myModal'>
@@ -430,27 +478,28 @@ if(!isset($_SESSION['admin']))
             </div>
             <!-- /. PAGE INNER  -->
         </div>
-        <!-- contenu -->
 
-        <!-- /. PAGE WRAPPER  -->
     </div>
-    <!-- /. WRAPPER  -->
+
     <!-- JS Scripts-->
     <script defer>
-        function openModal() {
-            const model = document.querySelector('.modal');
-            document.querySelector('.modal').classList.add('opacity-100');
-            document.querySelector('.modal').classList.remove('opacity-0');
-            document.querySelector('.modal').classList.remove('pointer-events-none');
-            model.style.display = 'flex';
-            document.querySelector('body').classList.add('modal-active');
+
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('opacity-100');
+            modal.classList.remove('opacity-0');
+            modal.classList.remove('pointer-events-none');
+            modal.style.display = 'flex';
+            document.body.classList.add('modal-active');
         }
 
-        function closeModal() {
-            document.querySelector('.modal').classList.add('opacity-0');
-            document.querySelector('.modal').classList.remove('opacity-100');
-            document.querySelector('.modal').classList.add('pointer-events-none');
-            document.querySelector('body').classList.remove('modal-active');
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('opacity-0');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('pointer-events-none');
+            modal.style.display = 'none';
+            document.body.classList.remove('modal-active');
         }
     </script>
     <!-- jQuery Js -->
@@ -465,7 +514,5 @@ if(!isset($_SESSION['admin']))
     <!-- Custom Js -->
     <script src="assets/js/custom-scripts.js"></script>
 
-
 </body>
-
 </html>
