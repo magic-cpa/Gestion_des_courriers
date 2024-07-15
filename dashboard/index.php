@@ -23,14 +23,10 @@ if (isset($_SESSION['user'])) {
   <link rel="stylesheet" href="vendors/feather/feather.css">
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
-
-  <!-- endinject -->
   <!-- Plugin css for this page -->
   <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" type="text/css" href="/js/select.dataTables.min.css">
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
@@ -40,10 +36,10 @@ if (isset($_SESSION['user'])) {
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center" style="background: #0f2453;">
         <a class="navbar-brand brand-logo" href="/dashboard/"><img src="./partials/images/logo-gestion-courrier.png"/></a>
       </div>
-      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end" style="background: #0f2453;">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
           <span class="icon-menu"></span>
         </button>
@@ -59,7 +55,7 @@ if (isset($_SESSION['user'])) {
             </div>
           </li>
         </ul>
-        <ul class="navbar-nav navbar-nav-right">
+        <ul class="navbar-nav navbar-nav-right" style="gap:1.5rem">
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="icon-bell mx-0"></i>
@@ -110,7 +106,7 @@ if (isset($_SESSION['user'])) {
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="images/faces/face28.jpg" alt="profile"/>
+              <img src="./partials/images/default_profile_image.jpg" alt="profile"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item">
@@ -183,123 +179,64 @@ if (isset($_SESSION['user'])) {
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
+          <?php 
+          require_once __DIR__.'/../admin/db_.php';
+          $id_agent = $_SESSION['user']['id_agent'];
+
+          $sql = "SELECT 
+                      c.id_courrier, 
+                      c.file_cour, 
+                      c.titre_cour, 
+                      c.created_at, 
+                      c.updated_at, 
+                      ca.id_cour_ag, 
+                      ca.id_cour, 
+                      ca.id_ag, 
+                      ca.id_admin, 
+                      ca.created_at AS ca_created_at, 
+                      ca.updated_at AS ca_updated_at
+                  FROM 
+                      courrier c
+                  JOIN 
+                      courrier_agent ca ON c.id_courrier = ca.id_cour
+                  WHERE 
+                      ca.id_ag = '$id_agent' AND 
+                      c.logical_delete = 0";
           
+          $result = mysqli_query($con, $sql);
+          
+          if (mysqli_num_rows($result) > 0) {
+              // Process the results
+              echo '<div class="container mx-auto mt-4">';
+              echo '<h3 class="text-lg font-semibold mb-2">Courrier Details</h3>';
+              while ($row = mysqli_fetch_assoc($result)) {
+                  echo '<div class="bg-white shadow-md rounded-lg p-4 mb-4">';
+                  echo '<p class="p-2 text-white" style="background: grey;width:20%;border-radius: 0.2rem;"><span class="font-bold">ID Courrier:</span> ' . $row['id_courrier'] . '</p>';
+                  echo '<p><span class="font-bold">Titre Courrier:</span> ' . $row['titre_cour'] . '</p>';
+                  echo '<p class=""><span class="font-bold">Fichier Courrier:</span> <a href="/courriers/' . $row['file_cour'] . '" class="text-blue-500 hover:underline" download>' . $row['file_cour'] . '</a></p>';
+                  echo '<p><span class="font-bold">ID Agent:</span> ' . $row['id_ag'] . '</p>';
+                  echo '<p><span class="font-bold">ID Admin:</span> ' . $row['id_admin'] . '</p>';
+                  echo '<p><span class="font-bold">Date evoie du Courrier:</span> ' . $row['ca_created_at'] . '</p>';
+                  echo '</div>';
+              }
+              echo '</div>';
+          } else {
+              echo '<div class="container mx-auto mt-4">';
+              echo '<div class="bg-red-100 text-red-700 p-4 rounded-lg">';
+              echo '<p>Aucun courrier trouvé pour cet agent.</p>';
+              echo '</div>';
+              echo '</div>';
+          }
+          mysqli_close($con);
+
+          ?>
           <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card position-relative">
                 <div class="card-body">
-                  <div id="detailedReports" class="carousel slide detailed-report-carousel position-static pt-2" data-ride="carousel">
-                    <div class="carousel-inner">
-                      <div class="carousel-item active">
-                        <div class="row">
-                          <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">
-                            <div class="ml-xl-4 mt-3">
-                            <p class="card-title">Detailed Reports</p>
-                              <h1 class="text-primary">$34040</h1>
-                              <h3 class="font-weight-500 mb-xl-4 text-primary">North America</h3>
-                              <p class="mb-2 mb-xl-0">The total number of sessions within the date range. It is the period time a user is actively engaged with your website, page or app, etc</p>
-                            </div>  
-                            </div>
-                          <div class="col-md-12 col-xl-9">
-                            <div class="row">
-                              <div class="col-md-6 border-right">
-                                <div class="table-responsive mb-3 mb-md-0 mt-3">
-                                  <table class="table table-borderless report-table">
-                                    <tr>
-                                      <td class="text-muted">Illinois</td>
-                                      <td class="w-100 px-0">
-                                        <div class="progress progress-md mx-4">
-                                          <div class="progress-bar bg-primary" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                      </td>
-                                      <td><h5 class="font-weight-bold mb-0">713</h5></td>
-                                    </tr>
-                                    <tr>
-                                      <td class="text-muted">Washington</td>
-                                      <td class="w-100 px-0">
-                                        <div class="progress progress-md mx-4">
-                                          <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                      </td>
-                                      <td><h5 class="font-weight-bold mb-0">583</h5></td>
-                                    </tr>
-                                    <tr>
-                                      <td class="text-muted">Mississippi</td>
-                                      <td class="w-100 px-0">
-                                        <div class="progress progress-md mx-4">
-                                          <div class="progress-bar bg-danger" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                      </td>
-                                      <td><h5 class="font-weight-bold mb-0">924</h5></td>
-                                    </tr>
-                                    <tr>
-                                      <td class="text-muted">California</td>
-                                      <td class="w-100 px-0">
-                                        <div class="progress progress-md mx-4">
-                                          <div class="progress-bar bg-info" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                      </td>
-                                      <td><h5 class="font-weight-bold mb-0">664</h5></td>
-                                    </tr>
-                                    <tr>
-                                      <td class="text-muted">Maryland</td>
-                                      <td class="w-100 px-0">
-                                        <div class="progress progress-md mx-4">
-                                          <div class="progress-bar bg-primary" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                      </td>
-                                      <td><h5 class="font-weight-bold mb-0">560</h5></td>
-                                    </tr>
-                                    <tr>
-                                      <td class="text-muted">Alaska</td>
-                                      <td class="w-100 px-0">
-                                        <div class="progress progress-md mx-4">
-                                          <div class="progress-bar bg-danger" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                      </td>
-                                      <td><h5 class="font-weight-bold mb-0">793</h5></td>
-                                    </tr>
-                                  </table>
-                                </div>
-                              </div>
-                              <div class="col-md-6 mt-3">
-                                <canvas id="north-america-chart"></canvas>
-                                <div id="north-america-legend"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="carousel-item">
-                        <div class="row">
-                          <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">
-                            <div class="ml-xl-4 mt-3">
-                            <p class="card-title">Detailed Reports</p>
-                              <h1 class="text-primary">$34040</h1>
-                              <h3 class="font-weight-500 mb-xl-4 text-primary">North America</h3>
-                              <p class="mb-2 mb-xl-0">The total number of sessions within the date range. It is the period time a user is actively engaged with your website, page or app, etc</p>
-                            </div>  
-                            </div>
-                          <div class="col-md-12 col-xl-9">
-                            
-                      </div>
-                    </div>
-                    <a class="carousel-control-prev" href="#detailedReports" role="button" data-slide="prev">
-                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                      <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#detailedReports" role="button" data-slide="next">
-                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </div>
+                  
                 </div>
-              </div>
-            </div>
           </div>
-    
-          
-          
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
