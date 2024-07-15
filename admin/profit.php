@@ -9,25 +9,22 @@ if(!isset($_SESSION["admin"]))
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-      <meta charset="utf-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GESTION COURRIER</title>
 	<!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
-     <!-- FontAwesome Styles-->
+    <!-- FontAwesome Styles-->
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
-    
 	<link rel="stylesheet" href="assets/css/morris.css">
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/js//raphael-min.js"></script>
 	<script src="assets/js/morris.min.js"></script>
-
-   
-        <!-- Custom Styles-->
+    <!-- Custom Styles-->
     <link href="assets/css/custom-styles.css" rel="stylesheet" />
-     <!-- Google Fonts-->
+    <!-- Google Fonts-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-     <!-- TABLE STYLES-->
+    <!-- TABLE STYLES-->
     <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 </head>
 <body>
@@ -103,24 +100,19 @@ if(!isset($_SESSION["admin"]))
             <div class="row">
 			
 				<?php 
-				//index.php
-				//$connect = mysqli_connect("localhost", "root", "", "hotel");
-				include('db_.php');
-				
-					
-					// $query = "SELECT * FROM agent";
-					// $result = mysqli_query($con, $query);
-					// $chart_data = '';
-					// $tot = 0;
-					// while($row = mysqli_fetch_array($result))
-					// {
-					//  $chart_data .= "{ date:'".$row["cout"]."', profit:".$row["fintot"] *10/100 ."}, ";
-					//  $tot = $tot + $row["fintot"] *10/100;
-					// }
-					// $chart_data = substr($chart_data, 0, -2);
+				include_once __DIR__ .'/db_.php';
+					$query = "SELECT * FROM agent";
+					$result = mysqli_query($con, $query);
+					$chart_data = '';
+					$tot = 0;
+					while($row = mysqli_fetch_array($result))
+					{
+					 $chart_data .= "{ date:'".$row["cout"]."', profit:".$row["fintot"] *10/100 ."}, ";
+					 $tot = $tot + $row["fintot"] *10/100;
+					}
+					$chart_data = substr($chart_data, 0, -2);
 				
 ?>
-				 
 				<br>
 				<br>
 				<br>
