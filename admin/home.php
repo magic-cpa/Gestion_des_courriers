@@ -37,7 +37,9 @@ if(!isset($_SESSION['admin']))
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"> <?php var_dump($_SESSION["admin"]) ; ?> </a>
+                <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+                    <a class="navbar-brand brand-logo" href="/admin/home.php"><img src=".././dashboard/partials/images/logo-gestion-courrier.png"/></a>
+                </div>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -65,10 +67,6 @@ if(!isset($_SESSION['admin']))
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
-
-                    <li>
-                        <a class="active-menu" href="home.php"><i class="fa fa-dashboard"></i> Status</a>
-                    </li>
                     <li>
                         <a href="roombook.php"><i class="fa fa-bar-chart-o"></i> Valider Courrier</a>
                     </li>
@@ -78,11 +76,8 @@ if(!isset($_SESSION['admin']))
                     <li>
                         <a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Deconnexion</a>
                     </li>
-                    
-					</ul>
-
+				</ul>
             </div>
-
         </nav>
         <!-- /. NAV SIDE  -->
 
@@ -166,6 +161,7 @@ if(!isset($_SESSION['admin']))
 		<div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
+                    <h3 class="p-2">Gérer les agents & courriers</h3>
                     <div class="panel-heading">
                     </div>
                     <div class="panel-body">
@@ -173,10 +169,9 @@ if(!isset($_SESSION['admin']))
                             <button class="btn btn-default" type="button" onclick="openModal('courrierModal')">
 								Envoyer Courrier  
 							</button>
-                            </div>
-                            <div class="panel-group" id="accordion">
-							
-							<div class="panel panel-primary">             
+                        </div>
+                            <div class="panel-group" id="accordion" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div class="panel panel-primary mt-2">             
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
                                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
@@ -220,7 +215,8 @@ if(!isset($_SESSION['admin']))
                             JOIN
                                 admin ad ON ca.id_admin = ad.id
                             WHERE
-                                c.logical_delete = 0 AND a.logical_delete = 0;";
+                                c.logical_delete = 0 AND a.logical_delete = 0
+                            ORDER BY ca.created_at DESC LIMIT 7;";
 									$result = mysqli_query($con, $rsql);
 
                                     if ($result) {
@@ -252,11 +248,11 @@ if(!isset($_SESSION['admin']))
                                     </div>
                                 </div>
 								<?php
-								$rsql = "SELECT COUNT(*) as courrier_count FROM `courrier` WHERE logical_delete = 0";
+								$rsql = "SELECT COUNT(*) as notification_count FROM `notification`";
                                 $result = mysqli_query($con, $rsql);
 								if ($result) {
                                     $row = mysqli_fetch_assoc($result);
-                                    $r = $row['courrier_count'];
+                                    $r = $row['notification_count'];
                                 } else {
                                     $r= 0; 
                                 }
@@ -268,46 +264,69 @@ if(!isset($_SESSION['admin']))
 											<button class="btn btn-primary" type="button">
 												 List des Notifications  <span class="badge"><?php echo $r ; ?></span>
 											</button>
-											
 											</a>
                                         </h4>
                                     </div>
-                                    <div id="collapseOne" class="panel-collapse collapse" style="height: 0px;">
-                                        <div class="panel-body">
-										<?php
-										$msql = "SELECT * FROM `courrier` WHERE logical_delete = 0";
-										$mre = mysqli_query($con,$msql);
-										
-										// while($mrow=mysqli_fetch_array($mre) )
-										// {		
-										// 	$br = $mrow['statut'];
-										// 	if($br=="0")
-										// 	{
-										// 		$fid = $mrow['id_courrier'];
-												 
-										// 	echo"<div class='col-md-3 col-sm-12 col-xs-12'>
-										// 			<div class='panel panel-primary text-center no-boder bg-color-blue'>
-										// 				<div class='panel-body'>
-										// 					<i class='fa fa-users fa-5x'></i>
-										// 					<h3>".$mrow['ref_courrier']."</h3>
-										// 				</div>
-										// 				<div class='panel-footer back-footer-blue'>
-										// 				<a><button  class='btn btn-primary btn' data-toggle='modal' data-target='#myModal'>
-										// 			Show
-										// 			</button></a>
-										// 					".$mrow['expe']."
-										// 				</div>
-										// 			</div>	
-										// 	</div>";
+                                <div id="collapseOne" class="panel-collapse collapse" style="height: 0px;">
+                                  <div class="panel-body">
+								<?php
+								$msql = "SELECT 
+                                n.id_not, n.id_cour, n.contenu_not, n.category, n.created_at, n.close_not,
+                                a.id_agent, a.nom_agent, a.prenom_agent, a.email_agent
+                                    FROM 
+                                        notification n
+                                    JOIN 
+                                        agent a ON n.id_agent = a.id_agent
+                                    WHERE 
+                                        a.logical_delete = 0
+                                    ORDER BY 
+                                        n.created_at DESC
+                                    LIMIT 7";
 
-										// 	}
-										// }
+									$mre = mysqli_query($con,$msql);
+									
+                                    if (mysqli_num_rows($mre) > 0) {
+                                        echo '<table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID Notification</th>
+                                                        <th>ID Courrier</th>
+                                                        <th>Contenu Notification</th>
+                                                        <th>Catégorie</th>
+                                                        <th>Fermé</th>
+                                                        <th>ID Agent</th>
+                                                        <th>Nom Agent</th>
+                                                        <th>Prénom Agent</th>
+                                                        <th>Email Agent</th>
+                                                        <th>Date Création</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>';
+                                    
+                                        while ($row = mysqli_fetch_assoc($mre)) {
+                                            echo '<tr>
+                                                    <td>' . $row['id_not'] . '</td>
+                                                    <td>' . $row['id_cour'] . '</td>
+                                                    <td>' . $row['contenu_not'] . '</td>
+                                                    <td>' . $row['category'] . '</td>
+                                                    <td>' . ($row['close_not'] ? 'Oui' : 'Non') . '</td>
+                                                    <td>' . $row['id_agent'] . '</td>
+                                                    <td>' . $row['nom_agent'] . '</td>
+                                                    <td>' . $row['prenom_agent'] . '</td>
+                                                    <td>' . $row['email_agent'] . '</td>
+                                                    <td>' . $row['created_at'] . '</td>
+                                                  </tr>';
+                                        }
+                                    
+                                        echo '</tbody></table>';
+                                    } else {
+                                        echo '<p>Aucune notification trouvée.</p>';
+                                    }
 										?>
 										</div>
                                     </div>
                                 </div>
-
-                                <?php
+                            <?php
 								$fsql = "SELECT * FROM `agent` WHERE logical_delete = 0";
 								$fre = mysqli_query($con,$fsql);
 								$f =0;
@@ -315,7 +334,7 @@ if(!isset($_SESSION['admin']))
 								{
 										$f = $f + 1;
 								}
-								?>
+							?>
                                 <div class="panel panel-danger">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
@@ -350,22 +369,23 @@ if(!isset($_SESSION['admin']))
                                     <tbody>
                                         
 									<?php
-									$csql = "select * from agent";
+									$csql = "SELECT * FROM `agent` WHERE logical_delete = 0 ORDER BY agent.created_at DESC LIMIT 5;";
 									$cre = mysqli_query($con,$csql);
-									while($crow=mysqli_fetch_array($cre) )
-									{	
-										
-											echo"<tr>
-												<th>".$crow['id_agent']."</th>
-												<th>".$crow['nom_agent']."</th>
-                                                <th>".$crow['prenom_agent']."</th>
-                                                <th>".$crow['tel_agent']."</th>
-                                                <th>".$crow['email_agent']."</th>
-                                                <th>"./*$crow['statut'].*/"</th>
-                                                
-                                                <th><a href='insc.php?ridz=".$crow['id_agent']." ' class='btn btn-primary'>Valider</a></th>
-												</tr>";
-									}
+									if (mysqli_num_rows($cre) > 0) {
+                                        while ($crow = mysqli_fetch_array($cre)) {
+                                            echo "<tr>
+                                                <td>{$crow['id_agent']}</td>
+                                                <td>{$crow['nom_agent']}</td>
+                                                <td>{$crow['prenom_agent']}</td>
+                                                <td>{$crow['tel_agent']}</td>
+                                                <td>{$crow['email_agent']}</td>
+                                                <td></td> <!-- Replace this with the appropriate value -->
+                                                <td><a href='insc.php?ridz={$crow['id_agent']}' class='btn btn-primary'>Valider</a></td>
+                                            </tr>";
+                                        }
+                                    } else {
+                                        echo "<tr><td colspan='7' class='text-center'>Aucun agent trouvé.</td></tr>";
+                                    }
 									?>
                                         
                                     </tbody>
@@ -483,7 +503,6 @@ if(!isset($_SESSION['admin']))
 
     <!-- JS Scripts-->
     <script defer>
-
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
             modal.classList.add('opacity-100');

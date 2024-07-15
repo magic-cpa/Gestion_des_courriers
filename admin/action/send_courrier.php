@@ -30,7 +30,17 @@ if (isset($_POST['send'])) {
                 $sql_courrier_agent = "INSERT INTO courrier_agent (id_cour, id_ag, id_admin, created_at, updated_at) VALUES ('$id_courrier', '$agent_recepteur', '$id_admin', NOW(), NOW())";
 
                 if (mysqli_query($con, $sql_courrier_agent)) {
-                    echo '<script>alert("Courrier sent successfully!"); window.location.href="http://localhost:8080/admin/home.php";</script>';
+                    // Insert into notification table
+                    $contenu_not = mysqli_real_escape_string($con, "Un nouveau courrier '$titre_cour' intitulé vous a été envoyé.");
+                    $category = mysqli_real_escape_string($con, "Courrier");
+                    
+                    // Insert into notification table
+                    $sql_notification = "INSERT INTO notification (id_cour, id_agent, contenu_not, category, created_at, updated_at) VALUES ('$id_courrier', '$agent_recepteur', '$contenu_not', '$category', NOW(), NOW())";
+                    if (mysqli_query($con, $sql_notification)) {
+                        echo '<script>alert("Courrier sent successfully!"); window.location.href="http://localhost:8080/admin/home.php";</script>';
+                    } else {
+                        echo '<script>alert("Error: Could not insert notification data."); window.location.href="http://localhost:8080/admin/home.php";</script>';
+                    }
                 } else {
                     echo '<script>alert("Error: Could not send courrier agent data."); window.location.href="http://localhost:8080/admin/home.php";</script>';
                 }

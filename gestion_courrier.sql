@@ -110,7 +110,8 @@ CREATE TABLE `courrier_agent` (
 
 CREATE TABLE `notification` (
   `id_not` int(11) NOT NULL,
-  `id_cour` int(11) NOT NULL,
+  `id_cour` int(11) DEFAULT NULL,
+  `id_agent` int(11) NOT NULL,
   `contenu_not` text NOT NULL,
   `category` varchar(100) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -118,8 +119,6 @@ CREATE TABLE `notification` (
   `close_not` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-ALTER TABLE `notification`
-MODIFY COLUMN `id_cour` int(11) DEFAULT NULL;
 
 --
 -- Indexes for dumped tables
