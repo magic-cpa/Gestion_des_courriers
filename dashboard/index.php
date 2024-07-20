@@ -4,14 +4,10 @@ if (session_status() == PHP_SESSION_NONE){
 }
   
   
-if (isset($_SESSION['user'])) {
-  // Display the logged-in user's information
-  var_dump($_SESSION['user']); 
-  // echo "Logged in as: " . htmlspecialchars($_SESSION['user']);
-} else {
-  // User is not logged in
+if (!isset($_SESSION['user'])) {
   header('location: http://localhost:8080/');
-}
+} 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -204,29 +200,27 @@ if (isset($_SESSION['user'])) {
                       c.logical_delete = 0";
           
           $result = mysqli_query($con, $sql);
-          
           if (mysqli_num_rows($result) > 0) {
-              // Process the results
-              echo '<div class="container mx-auto mt-4">';
-              echo '<h3 class="text-lg font-semibold mb-2">Courrier Details</h3>';
-              while ($row = mysqli_fetch_assoc($result)) {
-                  echo '<div class="bg-white shadow-md rounded-lg p-4 mb-4">';
-                  echo '<p class="p-2 text-white" style="background: grey;width:20%;border-radius: 0.2rem;"><span class="font-bold">ID Courrier:</span> ' . $row['id_courrier'] . '</p>';
-                  echo '<p><span class="font-bold">Titre Courrier:</span> ' . $row['titre_cour'] . '</p>';
-                  echo '<p class=""><span class="font-bold">Fichier Courrier:</span> <a href="/courriers/' . $row['file_cour'] . '" class="text-blue-500 hover:underline" download>' . $row['file_cour'] . '</a></p>';
-                  echo '<p><span class="font-bold">ID Agent:</span> ' . $row['id_ag'] . '</p>';
-                  echo '<p><span class="font-bold">ID Admin:</span> ' . $row['id_admin'] . '</p>';
-                  echo '<p><span class="font-bold">Date evoie du Courrier:</span> ' . $row['ca_created_at'] . '</p>';
-                  echo '</div>';
-              }
-              echo '</div>';
-          } else {
-              echo '<div class="container mx-auto mt-4">';
-              echo '<div class="bg-red-100 text-red-700 p-4 rounded-lg">';
-              echo '<p>Aucun courrier trouvé pour cet agent.</p>';
-              echo '</div>';
-              echo '</div>';
-          }
+            // Process the results
+            echo '<div class="container mx-auto mt-4">';
+            echo '<h3 class="text-lg font-semibold mb-2">List des Courriers</h3>';
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo '<div class="bg-white shadow-md rounded-lg p-4 mb-4">';
+                echo '<div class="side_mail"><p class="p-2 text-white" style="background: grey;width:20%;border-radius: 0.2rem;"><span class="font-bold">ID Courrier:</span> ' . $row['id_courrier'] . '</p> <p><a href="/courriers/' . $row['file_cour'] . '" class="download_file" download>Télécharger le courrier</a></p></div>';
+                echo '<p><span class="font-bold">Titre Courrier:</span> ' . $row['titre_cour'] . '</p>';
+                echo '<p><span class="font-bold">Fichier Courrier:</span> ' . $row['file_cour'] . '</p>';
+                echo '<p><span class="font-bold">Identifion Agent:</span> ' . $row['id_ag'] . '</p>';
+                echo '<p><span class="font-bold">Date d\'envoi du Courrier:</span> ' . $row['ca_created_at'] . '</p>';
+                echo '</div>';
+            }
+            echo '</div>';
+        } else {
+            echo '<div class="container mx-auto mt-4">';
+            echo '<div class="bg-red-100 text-red-700 p-4 rounded-lg">';
+            echo '<p>Aucun courrier trouvé pour cet agent.</p>';
+            echo '</div>';
+            echo '</div>';
+        }
           mysqli_close($con);
 
           ?>

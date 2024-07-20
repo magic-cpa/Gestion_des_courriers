@@ -134,7 +134,7 @@
     $dbname = "gestion_courrier";
     $resultat = "";
     $connexe = new mysqli("localhost", "root", "1234", "gestion_courrier");
-    $requette = "SELECT * FROM _courrier ";
+    $requette = "SELECT * FROM courrier ";
     $resultat = $connexe->query($requette);
 
     ?>
@@ -229,7 +229,7 @@
 
         <!-- /contact -->
         <div class="copy">
-            <p>© 2021 GESTION CORRIER . All Rights Reserved | Plateforme gerer avec PHP / JAVASCRIPT <a href="index.php">FIDWIN</a> </p>
+            <p>© 2024 GESTION CORRIER . Tous droits réservés | Plateforme gerer avec PHP / JAVASCRIPT <a href="index.php">FIDWIN</a> </p>
         </div>
             <!--/footer -->
             <!-- js -->
