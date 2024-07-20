@@ -65,8 +65,27 @@ if (isset($_POST['envoyer'])) {
             // Bind parameters and execute the statement
             $stmt->bind_param("sssss", $nom_agent, $prenom_agent, $email_agent, $tel_agent, $hashed_password);
             if ($stmt->execute()) {
-                header("Location: http://localhost:8080/"); // Redirect to success page
-                exit(); // Ensure that script stops execution after redirect
+                $agent_id = $stmt->insert_id;
+
+                // Prepare the notification content
+                $contenu_not = "Bienvenue mr '$nom_agent $prenom_agent' a votre platform.";
+                $category = "Inscription";
+
+                // Insert the notification into the notification table
+                $stmt_not = $conn->prepare("INSERT INTO notification (id_agent, contenu_not, category, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())");
+                $stmt_not->bind_param("iss", $agent_id, $contenu_not, $category);
+                if ($stmt_not->execute()) {
+                    // Notification inserted successfully
+                } else {
+                    printf("Erreur d'insertion de la notification: %s\n", $stmt_not->error);
+                }
+
+                // Close the notification statement
+                $stmt_not->close();
+
+                // Redirect to success page
+                header("Location: http://localhost:8080/");
+                exit(); 
             } else {
                 printf("Erreur d'insertion: %s\n", $stmt->error);
                 $isSuccess = false;
