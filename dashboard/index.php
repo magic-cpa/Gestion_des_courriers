@@ -39,18 +39,21 @@ if (!isset($_SESSION['user'])) {
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
           <span class="icon-menu"></span>
         </button>
+        <!-- Search bar -->
         <ul class="navbar-nav mr-lg-2">
           <li class="nav-item nav-search d-none d-lg-block">
-            <div class="input-group">
-              <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
-                <span class="input-group-text" id="search">
-                  <i class="icon-search"></i>
-                </span>
+            <form method="GET" action="index.php">
+              <div class="input-group">
+                <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
+                    <span class="input-group-text" id="search">
+                        <i class="icon-search"></i>
+                    </span>
+                </div>
+                <input type="text" name="search" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
               </div>
-              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
-            </div>
-          </li>
-        </ul>
+            </form>
+        </li>
+      </ul>
         <ul class="navbar-nav navbar-nav-right" style="gap:1.5rem">
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
@@ -179,6 +182,41 @@ if (!isset($_SESSION['user'])) {
           require_once __DIR__.'/../admin/db_.php';
           $id_agent = $_SESSION['user']['id_agent'];
 
+          // Define the number of results per page
+          $results_per_page = 2;
+
+          function securisation($con, $data) {
+            return mysqli_real_escape_string($con, trim($data));
+          }
+          
+          // Check if a search query is set
+          $search_query = isset($_GET['search']) ? securisation($con,$_GET['search']) : '';
+          
+          // Base SQL query for counting the results
+          $count_sql = "SELECT COUNT(c.id_courrier) AS total 
+                        FROM courrier c
+                        JOIN courrier_agent ca ON c.id_courrier = ca.id_cour
+                        WHERE ca.id_ag = '$id_agent' AND c.logical_delete = 0";
+          
+          // Append search filter to the count query if a search query is set
+          if ($search_query) {
+              $count_sql .= " AND (c.titre_cour LIKE '%$search_query%' OR c.file_cour LIKE '%$search_query%')";
+          }
+          
+          $result = mysqli_query($con, $count_sql);
+          $row = mysqli_fetch_assoc($result);
+          $total_results = $row['total'];
+          
+          // Determine the total number of pages available
+          $total_pages = ceil($total_results / $results_per_page);
+          
+          // Determine which page number visitor is currently on
+          $page = isset($_GET['page']) ? $_GET['page'] : 1;
+          
+          // Determine the SQL LIMIT starting number for the results on the displaying page
+          $this_page_first_result = ($page - 1) * $results_per_page;
+          
+          // Base SQL query for retrieving the results
           $sql = "SELECT 
                       c.id_courrier, 
                       c.file_cour, 
@@ -199,30 +237,67 @@ if (!isset($_SESSION['user'])) {
                       ca.id_ag = '$id_agent' AND 
                       c.logical_delete = 0";
           
+          // Append search filter to the result query if a search query is set
+          if ($search_query) {
+              $sql .= " AND (c.titre_cour LIKE '%$search_query%' OR c.file_cour LIKE '%$search_query%')";
+          }
+          
+          // Append LIMIT and OFFSET for pagination
+          $sql .= " LIMIT $this_page_first_result, $results_per_page";
+          
           $result = mysqli_query($con, $sql);
+          
           if (mysqli_num_rows($result) > 0) {
-            // Process the results
-            echo '<div class="container mx-auto mt-4">';
-            echo '<h3 class="text-lg font-semibold mb-2">List des Courriers</h3>';
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo '<div class="bg-white shadow-md rounded-lg p-4 mb-4">';
-                echo '<div class="side_mail"><p class="p-2 text-white" style="background: grey;width:20%;border-radius: 0.2rem;"><span class="font-bold">ID Courrier:</span> ' . $row['id_courrier'] . '</p> <p><a href="/courriers/' . $row['file_cour'] . '" class="download_file" download>Télécharger le courrier</a></p></div>';
-                echo '<p><span class="font-bold">Titre Courrier:</span> ' . $row['titre_cour'] . '</p>';
-                echo '<p><span class="font-bold">Fichier Courrier:</span> ' . $row['file_cour'] . '</p>';
-                echo '<p><span class="font-bold">Identifion Agent:</span> ' . $row['id_ag'] . '</p>';
-                echo '<p><span class="font-bold">Date d\'envoi du Courrier:</span> ' . $row['ca_created_at'] . '</p>';
-                echo '</div>';
-            }
-            echo '</div>';
-        } else {
-            echo '<div class="container mx-auto mt-4">';
-            echo '<div class="bg-red-100 text-red-700 p-4 rounded-lg">';
-            echo '<p>Aucun courrier trouvé pour cet agent.</p>';
-            echo '</div>';
-            echo '</div>';
-        }
+              // Process the results
+              echo '<div class="container mx-auto mt-4">';
+              echo '<h3 class="text-lg font-semibold mb-2">List des Courriers</h3>';
+              while ($row = mysqli_fetch_assoc($result)) {
+                  echo '<div class="bg-white shadow-md rounded-lg p-4 mb-4">';
+                  echo '<div class="side_mail"><p class="p-2 text-white" style="background: grey;width:20%;border-radius: 0.2rem;"><span class="font-bold">ID Courrier:</span> ' . $row['id_courrier'] . '</p> <p><a href="/courriers/' . $row['file_cour'] . '" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700" download>Télécharger le courrier</a></p></div>';
+                  echo '<p><span class="font-bold">Titre Courrier:</span> ' . $row['titre_cour'] . '</p>';
+                  echo '<p><span class="font-bold">Fichier Courrier:</span> ' . $row['file_cour'] . '</p>';
+                  echo '<p><span class="font-bold">Identifion Agent:</span> ' . $row['id_ag'] . '</p>';
+                  echo '<p><span class="font-bold">Date d\'envoi du Courrier:</span> ' . $row['ca_created_at'] . '</p>';
+                  echo '</div>';
+              }
+              echo '</div>';
+          
+              // Display the pagination links
+              echo '<div class="container mx-auto mt-4">';
+              echo '<nav class="flex justify-center">';
+              echo '<ul class="pagination flex" style="justify-content:center">';
+          
+              // Display the previous page link
+              if ($page > 1) {
+                  echo '<li class="page-item"><a class="page-link" href="index.php?page=' . ($page - 1) . '">&laquo; Précédent</a></li>';
+              }
+          
+              // Display links to all the pages
+              for ($i = 1; $i <= $total_pages; $i++) {
+                  if ($i == $page) {
+                      echo '<li class="page-item active"><a class="page-link" href="index.php?page=' . $i . '">' . $i . '</a></li>';
+                  } else {
+                      echo '<li class="page-item"><a class="page-link" href="index.php?page=' . $i . '">' . $i . '</a></li>';
+                  }
+              }
+          
+              // Display the next page link
+              if ($page < $total_pages) {
+                  echo '<li class="page-item"><a class="page-link" href="index.php?page=' . ($page + 1) . '">Suivant &raquo;</a></li>';
+              }
+          
+              echo '</ul>';
+              echo '</nav>';
+              echo '</div>';
+          } else {
+              echo '<div class="container mx-auto mt-4">';
+              echo '<div class="bg-red-100 text-red-700 p-4 rounded-lg">';
+              echo '<p>Aucun courrier trouvé pour cet agent.</p>';
+              echo '</div>';
+              echo '</div>';
+          }
+          
           mysqli_close($con);
-
           ?>
           <div class="row">
             <div class="col-md-12 grid-margin stretch-card">

@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
             if (password_verify($password, $row['password'])) {
                 // Password correct, set session and redirect
                 $_SESSION['admin'] = $result;
-                header("location: http://localhost:8080/admin/home.php");
+                header("location: http://localhost:8080/admin/index.php");
                 exit;
             } else {
                 // Password incorrect
