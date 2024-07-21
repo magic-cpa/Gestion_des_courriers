@@ -44,7 +44,7 @@ if(isset($_SESSION['admin']))
                     <span class="icon-bar"></span>
                 </button>
                 <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                    <a class="navbar-brand brand-logo" href="/admin/home.php"><img src=".././dashboard/partials/images/logo-gestion-courrier.png"/></a>
+                    <a class="navbar-brand brand-logo" href="/admin/index.php"><img src=".././dashboard/partials/images/logo-gestion-courrier.png"/></a>
                 </div>
             </div>
 
@@ -59,7 +59,7 @@ if(isset($_SESSION['admin']))
                         <li><a href=""><i class="fa fa-gear fa-fw"></i> Parametre</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href=""><i class="fa fa-sign-out fa-fw"></i> Se deconecter</a>
+                        <li><a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Se deconecter</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -73,12 +73,12 @@ if(isset($_SESSION['admin']))
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
-                    <li>
+                    <!-- <li>
                         <a href="roombook.php"><i class="fa fa-bar-chart-o"></i> Valider Courrier</a>
                     </li>
                     <li>
                         <a  href="profit.php"><i class="fa fa-qrcode"></i> Profit</a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Deconnexion</a>
                     </li>
@@ -394,7 +394,7 @@ if(isset($_SESSION['admin']))
                                                 <td>{$crow['tel_agent']}</td>
                                                 <td>{$crow['email_agent']}</td>
                                                 <td></td> <!-- Replace this with the appropriate value -->
-                                                <td><a href='insc.php?ridz={$crow['id_agent']}' class='btn btn-primary'>Valider</a></td>
+                                                <td><a href='#' class='btn btn-primary' onclick='return confirmDelete({$crow['id_agent']})'>Supprimer</a></td>
                                             </tr>";
                                         }
                                     } else {
@@ -517,6 +517,15 @@ if(isset($_SESSION['admin']))
 
     <!-- JS Scripts-->
     <script defer>
+
+        function confirmDelete(id) {
+            var confirmation = confirm("Êtes-vous sûr de vouloir supprimer cet agent ?");
+            if (confirmation) {
+                window.location.href = '/admin/action/delete_agent.php?ridz=' + id;
+            }
+        return false;
+        }                                
+
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
             modal.classList.add('opacity-100');
