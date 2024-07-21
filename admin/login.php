@@ -1,16 +1,16 @@
 <?php  
  session_start();  
- if(isset($_SESSION["user"]))  
- {  
-      header("location: http://localhost:8080/admin/login.php");  
- }  
+//  if(isset($_SESSION["admin"]))  
+//  {  
+//       header("location: http://localhost:8080/admin/login.php");  
+//  }  
  
  ?>
 <!DOCTYPE html>
 <html >
 <head>
   <meta charset="UTF-8">
-  <title>ADMIN - login</title>
+  <title>administrateur - login</title>
   <link rel="stylesheet" href="css/style.css">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Custom CSS -->

@@ -1,9 +1,15 @@
 ﻿<?php  
-session_start();  
-if(!isset($_SESSION['admin']))
+if (session_status() == PHP_SESSION_NONE){
+    session_start();
+  }
+if(isset($_SESSION['admin']))
 {
- header("location:index.php");
+  $admin = $_SESSION['admin']; 
+}else{
+    header("location: http://localhost:8080/admin/login.php");
 }
+
+
 ?> 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -183,6 +189,14 @@ if(!isset($_SESSION['admin']))
                                     </div>
                                     <div id="collapseTwo" class="panel-collapse in" style="height: auto;">
                                         <div class="panel-body">
+                                        <!-- Add Search Bar -->
+                                        <div class="input-group mb-3" style="display: flex;align-items: center;">
+                                            <h5>recherche des courriers: </h5>
+                                            <input type="text" class="form-control" id="searchInput" placeholder="Rechercher des courriers...">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="icon-search"></i></span>
+                                            </div>
+                                        </div>
                                            <div class="panel panel-default">
                         
                         <div class="panel-body">
@@ -201,7 +215,7 @@ if(!isset($_SESSION['admin']))
                                             <th>Date evoie</th>								
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="courrierTableBody">
                                         
 								<?php
 								$rsql = "SELECT c.id_courrier, c.file_cour, c.titre_cour, a.id_agent,
@@ -521,6 +535,7 @@ if(!isset($_SESSION['admin']))
             document.body.classList.remove('modal-active');
         }
     </script>
+    <script src="assets/js/search.js"></script>
     <!-- jQuery Js -->
     <script src="assets/js/jquery-1.10.2.js"></script>
     <!-- Bootstrap Js -->
