@@ -37,27 +37,27 @@ if (isset($_POST['send'])) {
                     // Insert into notification table
                     $sql_notification = "INSERT INTO notification (id_cour, id_agent, contenu_not, category, created_at, updated_at) VALUES ('$id_courrier', '$agent_recepteur', '$contenu_not', '$category', NOW(), NOW())";
                     if (mysqli_query($con, $sql_notification)) {
-                        echo '<script>alert("Courrier sent successfully!"); window.location.href="http://localhost:8080/admin/home.php";</script>';
+                        echo '<script>alert("Courrier sent successfully!"); window.location.href="http://localhost:8080/admin/index.php";</script>';
                     } else {
-                        echo '<script>alert("Error: Could not insert notification data."); window.location.href="http://localhost:8080/admin/home.php";</script>';
+                        echo '<script>alert("Error: Could not insert notification data."); window.location.href="http://localhost:8080/admin/index.php";</script>';
                     }
                 } else {
-                    echo '<script>alert("Error: Could not send courrier agent data."); window.location.href="http://localhost:8080/admin/home.php";</script>';
+                    echo '<script>alert("Error: Could not send courrier agent data."); window.location.href="http://localhost:8080/admin/index.php";</script>';
                 }
             } else {
-                echo '<script>alert("Error: Could not insert courrier data."); window.location.href="http://localhost:8080/admin/home.php";</script>';
+                echo '<script>alert("Error: Could not insert courrier data."); window.location.href="http://localhost:8080/admin/index.php";</script>';
             }
         } else {
-            echo '<script>alert("Error: Could not upload file."); window.location.href="http://localhost:8080/admin/home.php";</script>';
+            echo '<script>alert("Error: Could not upload file."); window.location.href="http://localhost:8080/admin/index.php";</script>';
         }
     } else {
-        echo '<script>alert("Error: Invalid file type. Only jpg, png, and pdf files are allowed."); window.location.href="http://localhost:8080/admin/home.php";</script>';
+        echo '<script>alert("Error: Invalid file type. Only jpg, png, and pdf files are allowed."); window.location.href="http://localhost:8080/admin/index.php";</script>';
     }
 
     // Close the database connection
     mysqli_close($con);
 } else {
-    header("Location: http://localhost:8080/admin/home.php");
+    header("Location: http://localhost:8080/admin/index.php");
     exit();
 }
 ?>

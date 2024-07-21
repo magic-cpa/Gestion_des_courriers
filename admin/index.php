@@ -59,7 +59,7 @@ if(isset($_SESSION['admin']))
                         <li><a href=""><i class="fa fa-gear fa-fw"></i> Parametre</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href=""><i class="fa fa-sign-out fa-fw"></i> Se deconecter</a>
+                        <li><a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Se deconecter</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -73,12 +73,12 @@ if(isset($_SESSION['admin']))
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
-                    <li>
+                    <!-- <li>
                         <a href="roombook.php"><i class="fa fa-bar-chart-o"></i> Valider Courrier</a>
                     </li>
                     <li>
                         <a  href="profit.php"><i class="fa fa-qrcode"></i> Profit</a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Deconnexion</a>
                     </li>

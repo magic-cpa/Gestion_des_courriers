@@ -12,7 +12,7 @@ if (isset($_POST['add'])) {
 
     // Check if passwords match
     if ($password !== $password_confirm) {
-        echo '<script>alert("Les mots de passe ne correspondent pas."); window.location.href="http://localhost:8080/admin/home.php";</script>';
+        echo '<script>alert("Les mots de passe ne correspondent pas."); window.location.href="http://localhost:8080/admin/index.php";</script>';
         exit();
     }
 
@@ -24,14 +24,14 @@ if (isset($_POST['add'])) {
             VALUES ('$name', '$prenom', '$email', '$numero_tel', '$hashed_password', $logical_delete_default, NOW(), NOW())";
 
     if (mysqli_query($con, $sql)) {
-        echo '<script>alert("Agent ajouté avec succès!"); window.location.href="http://localhost:8080/admin/home.php";</script>';
+        echo '<script>alert("Agent ajouté avec succès!"); window.location.href="http://localhost:8080/admin/index.php";</script>';
     } else {
-        echo '<script>alert("Erreur lors de l\'ajout de l\'agent."); window.location.href="http://localhost:8080/admin/home.php";</script>';
+        echo '<script>alert("Erreur lors de l\'ajout de l\'agent."); window.location.href="http://localhost:8080/admin/index.php";</script>';
     }
 
     mysqli_close($con);
 } else {
-    header("Location: http://localhost:8080/admin/home.php");
+    header("Location: http://localhost:8080/admin/index.php");
     exit();
 }
 
