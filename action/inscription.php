@@ -68,7 +68,7 @@ if (isset($_POST['envoyer'])) {
                 $agent_id = $stmt->insert_id;
 
                 // Prepare the notification content
-                $contenu_not = "Bienvenue mr '$nom_agent $prenom_agent' a votre platform.";
+                $contenu_not = "Un nouveau compte agent a été créer sous nom: '$nom_agent $prenom_agent";
                 $category = "Inscription";
 
                 // Insert the notification into the notification table

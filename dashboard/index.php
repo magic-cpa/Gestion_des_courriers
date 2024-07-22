@@ -1,4 +1,5 @@
-<?php 
+<?php
+require_once __DIR__.'/../admin/db_.php'; 
 if (session_status() == PHP_SESSION_NONE){
   session_start();
 }
@@ -54,55 +55,50 @@ if (!isset($_SESSION['user'])) {
             </form>
         </li>
       </ul>
+        <?php 
+        $id_agent = $_SESSION['user']['id_agent']; 
+        $sql = "SELECT * FROM notification WHERE id_agent = '$id_agent' ORDER BY created_at DESC";
+        $result = mysqli_query($con, $sql);
+        
+        $notifications = [];
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $notifications[] = $row;
+            }
+        }
+
+        ?>
         <ul class="navbar-nav navbar-nav-right" style="gap:1.5rem">
-          <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-              <i class="icon-bell mx-0"></i>
-              <span class="count"></span>
+        <li class="nav-item dropdown">
+    <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+        <i class="icon-bell mx-0"></i>
+        <span class="count"><?php echo count($notifications); ?></span>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+        <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+        <?php foreach ($notifications as $notification): ?>
+            <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                    <div class="preview-icon bg-<?php echo $notification['category']; ?>" style="background-color:#000000b5">
+                        <?php if ($notification['category'] == 'Courrier'): ?>
+                            <i class="ti-info-alt mx-0"></i>
+                        <?php elseif ($notification['category'] == 'warning'): ?>
+                            <i class="ti-settings mx-0"></i>
+                        <?php elseif ($notification['category'] == 'Inscription'): ?>
+                            <i class="ti-user mx-0"></i>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="preview-item-content">
+                    <h6 class="preview-subject font-weight-normal"><?php echo $notification['contenu_not']; ?></h6>
+                    <p class="font-weight-light small-text mb-0 text-muted">
+                        <?php echo date('F j, Y, g:i a', strtotime($notification['created_at'])); ?>
+                    </p>
+                </div>
             </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-              <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-success">
-                    <i class="ti-info-alt mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Application Error</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    Just now
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-warning">
-                    <i class="ti-settings mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Settings</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    Private message
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="ti-user mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">New user registration</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    2 days ago
-                  </p>
-                </div>
-              </a>
-            </div>
-          </li>
+        <?php endforeach; ?>
+    </div>
+</li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
               <img src="./partials/images/default_profile_image.jpg" alt="profile"/>
