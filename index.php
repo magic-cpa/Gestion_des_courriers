@@ -53,7 +53,7 @@ $isLoggedIn = isset($_SESSION['user']) && $_SESSION['user'] === true;
 							<span class="icon-bar"></span>
 						</button>
 						
-					</div><h1><a class="navbar-brand" href="">GESTION <span>COURIIER</span><p class="logo_w3l_agile_caption">Controle le flux des courriers</p></a></h1>
+					</div><h1><a class="navbar-brand" href="">GESTION <span>COURRIER</span><p class="logo_w3l_agile_caption">Controle le flux des courriers</p></a></h1>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
 						<nav class="menu menu--iris">
@@ -288,7 +288,7 @@ $isLoggedIn = isset($_SESSION['user']) && $_SESSION['user'] === true;
                         });
                     </script>
                     <!-- //flexSlider -->
-        <script src="js/responsiveslides.min.js"></script>
+        			<script src="js/responsiveslides.min.js"></script>
                     <script>
                                 // You can also use "$(window).load(function() {"
                                 $(function () {

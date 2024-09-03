@@ -32,11 +32,7 @@ jQuery(document).ready(function($){
 	});
 
 	
-	
-	
 
-
-	
 
 	//submenu items - go back link
 	$('.go-back').on('click', function(){

@@ -20,7 +20,15 @@
  
     <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
     <h2 class="text-2xl font-bold text-center mb-4">Admin Login</h2>
+    
         <form action="/admin/action/login.php" method="post">
+        <?php
+        {/** Error display **/}
+        if (isset($_GET['error'])) {
+        $err = $_GET['error'];
+          echo "<p style='color:#fff;margin-left:0rem;border-radius:3px;  width: 100%; background: red;text-align: center; padding:1rem; margin:0.5rem'>email ou mot de passe ne correspond à aucun compte</p>";
+        }
+        ?>
           <div class="mb-4">
                 <label for="email" class="block text-gray-600 text-sm font-medium mb-2">Email Address</label>
                 <input type="email" id="email" name="email"
