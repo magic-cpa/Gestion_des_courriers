@@ -43,10 +43,12 @@ if (isset($_POST['envoyer'])) {
         //les champs "nom" et "prenom" comportent au moins trois caractere lettre
         if (strlen($password) < 6) {
             $caracter_error = "Le mot de passe doit comporter au moins 6 caractères";
-            $isSuccess = false;
+            header('location: http://localhost:8080/inscrire.php?error='.urlencode($caracter_error));
+            exit();
         } elseif ($password !== $password_confirm) {
             $password_confirm_error = "Les mots de passe ne correspondent pas";
-            $isSuccess = false;
+            header('location: http://localhost:8080/inscrire.php?error='.urlencode($password_confirm_error));
+            exit();
         } else {
             // Hash the password
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);

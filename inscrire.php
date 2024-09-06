@@ -23,10 +23,13 @@ if(isset($_SESSION)){
 <body>
     <div class="container mt-5">
         <div class="tete text-center mb-4">
-            <h2 class="text-center mb-5">Inscription Agent</h2>
-            <?php if (!empty($password_confirm_error)) { echo "<p class='alert alert-danger'>$password_confirm_error</p>"; } ?>
-            <?php if (!empty($messzge_error)) { echo "<p class='alert alert-danger'>$messzge_error</p>"; } ?>
-            <?php if (!empty($carater_error)) { echo "<p class='alert alert-danger'>$carater_error</p>"; } ?>
+        <?php 
+            // Check if an error exists in the URL and display it
+            if (isset($_GET['error'])) {
+                echo "<p class='alert alert-danger'>".htmlspecialchars($_GET['error'])."</p>";
+            }
+        ?>
+        <h2 class="text-center mb-5">Inscription Agent</h2>
         </div>
         <form action="/action/inscription.php" method="POST" ENCTYPE="multipart/form-data">
             <div class="form_inscr">
@@ -62,6 +65,7 @@ if(isset($_SESSION)){
         </form>
     </div>
     <script>
+
         function Afficher() {
             var input = document.getElementById("Password");
             if (input.type === "password") {
