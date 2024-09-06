@@ -43,9 +43,11 @@ if(isset($_SESSION['admin']))
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                    <a class="navbar-brand brand-logo" href="/admin/index.php"><img src=".././dashboard/partials/images/logo-gestion-courrier.png"/></a>
-                </div>
+                
+                
+                <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center" >
+        				<a class="navbar-brand brand-logo" href="/admin/index.php"><img src="/images/algerie_telecome_logo.svg" alt="" class="" style="height:45px"/></a>
+				</div>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">

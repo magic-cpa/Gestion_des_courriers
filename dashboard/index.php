@@ -35,7 +35,7 @@ if (!isset($_SESSION['user'])) {
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center" style="background: #0f2453;">
-        <a class="navbar-brand brand-logo" href="/dashboard/"><img src="./partials/images/logo-gestion-courrier.png"/></a>
+        <a class="navbar-brand brand-logo" href="/dashboard/"><img src="/images/algerie_telecome_logo.svg"/></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end" style="background: #0f2453;">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">

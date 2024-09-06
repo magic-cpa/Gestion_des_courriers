@@ -53,7 +53,12 @@ $isLoggedIn = isset($_SESSION['user']) && $_SESSION['user'] === true;
 							<span class="icon-bar"></span>
 						</button>
 						
-					</div><h1><a class="navbar-brand" href="">GESTION <span>COURRIER</span><p class="logo_w3l_agile_caption">Controle le flux des courriers</p></a></h1>
+					</div>
+
+					<div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center" >
+        				<a class="navbar-brand brand-logo" href="/"><img src="images/algerie_telecome_logo.svg" alt="" class="" style="height:45px"/></a>
+					</div>
+  		
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
 						<nav class="menu menu--iris">
