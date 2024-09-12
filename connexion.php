@@ -66,12 +66,9 @@ if(isset($_SESSION)){
                         <span class="icon-bar"></span>
                     </button>
                 </div>
-                <h1>
-                    <a class="navbar-brand" href="/">
-                        GESTION <span>COURIIER</span>
-                        <p class="logo_w3l_agile_caption">Controle le flux des courriers</p>
-                    </a>
-                </h1>
+                <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center" >
+        				<a class="navbar-brand brand-logo" href="/"><img src="images/algerie_telecome_logo.svg" alt="" class="" style="height:45px"/></a>
+				</div>
                 <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
                     <nav class="menu menu--iris">
                         <ul class="nav navbar-nav menu__list">

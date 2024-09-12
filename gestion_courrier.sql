@@ -85,6 +85,7 @@ CREATE TABLE `courrier` (
   `file_cour` varchar(255) NOT NULL,
   `titre_cour` varchar(255) NOT NULL,
   `logical_delete` tinyint(1) NOT NULL DEFAULT 0,
+  `archiver` tinyint(1) DEFAULT NULL,  -- Nullable boolean for archiving status
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id_courrier`)
@@ -98,15 +99,15 @@ CREATE TABLE `courrier` (
 
 CREATE TABLE `courrier_agent` (
   `id_cour_ag` int(11) NOT NULL AUTO_INCREMENT,
-  `id_cour` int(11) NOT NULL,
-  `id_ag_destinataire` int(11) NOT NULL,  -- L'agent qui reçoit le courrier
-  `id_envoyeur` int(11) NULL,  -- Peut être soit l'ID d'un agent, soit l'ID d'un admin
-  `envoyeur_type` ENUM('admin', 'agent') NOT NULL,  -- Type d'envoyeur : admin ou agent
+  `id_cour` int(11) NOT NULL,  -- This references the id_courrier column in the courrier table
+  `id_ag_destinataire` int(11) NOT NULL,  -- This references the id_agent column in the agent table
+  `id_envoyeur` int(11) NULL,  -- Can be either the ID of an agent or an admin
+  `envoyeur_type` ENUM('admin', 'agent') NOT NULL,  -- Type of sender: admin or agent
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id_cour_ag`),
-  FOREIGN KEY (`id_cour`) REFERENCES `courriers`(`id_cour`) ON DELETE CASCADE,
-  FOREIGN KEY (`id_ag_destinataire`) REFERENCES `agents`(`id_ag`) ON DELETE CASCADE
+  FOREIGN KEY (`id_cour`) REFERENCES `courrier`(`id_courrier`) ON DELETE CASCADE,  -- Correct foreign key
+  FOREIGN KEY (`id_ag_destinataire`) REFERENCES `agent`(`id_agent`) ON DELETE CASCADE  -- Correct foreign key
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

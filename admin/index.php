@@ -146,7 +146,7 @@ if(isset($_SESSION['admin']))
                                 echo '<option value="' . $row['id_agent'] . '">' . $row['nom_agent']. ' ' . $row['prenom_agent'] . '</option>';
                             }
                             } else {
-                                echo '<option value="">No agents available</option>';
+                                echo '<option value="">aucun agent trouver !!</option>';
                             }
                         ?>
                         </select>
@@ -166,6 +166,71 @@ if(isset($_SESSION['admin']))
         </div>
     </div>
 
+    <!-- Modal -->
+    <div id="archivecourrierModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+
+        <div class="modal-container bg-white w-11/12 max-w-6xl mx-auto rounded shadow-lg z-50 overflow-y-auto">
+
+            <div class="modal-content py-4 text-left px-6">
+                <!--Title-->
+                <div class="flex justify-between items-center pb-3">
+                    <p class="text-2xl font-bold">Courrier archiver</p>
+                    <div class="modal-close cursor-pointer z-50" onclick="closeModal('archivecourrierModal')">
+                        <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                            <path d="M14.53 4.53a.75.75 0 00-1.06-1.06L9 7.94 4.53 3.47a.75.75 0 10-1.06 1.06L7.94 9l-4.47 4.47a.75.75 0 001.06 1.06L9 10.06l4.47 4.47a.75.75 0 001.06-1.06L10.06 9l4.47-4.47z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-white shadow-md rounded-lg">
+                    <ul class="space-y-4">
+                <?php 
+                    $sql = "SELECT file_cour from courrier WHERE courrier.archiver = 1";
+                    $result = mysqli_query($con,$sql);
+                    if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $fileCour = $row['file_cour'];
+                            $fileExtension = strtolower(pathinfo($fileCour, PATHINFO_EXTENSION));
+            
+                            // Check if the file is an image or a PDF
+                            if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif'])) {
+                                // Render image preview
+                                echo '
+                                <li class="flex items-center space-x-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M6 2v6h6V2H6zM12 22h6V12h4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10H0V8h12V2h10v10h-6v8z"></path>
+                                    </svg>
+                                    <span class="text-blue-600">' . htmlspecialchars($fileCour) . '</span>
+                                </li>';
+                            } elseif ($fileExtension === 'pdf') {
+                                // Render PDF with an icon and download link
+                                echo '
+                                <li class="flex items-center space-x-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M6 2v6h6V2H6zM12 22h6V12h4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10H0V8h12V2h10v10h-6v8z"></path>
+                                    </svg>
+                                    <span class="text-blue-600">' . htmlspecialchars($fileCour) . '</span>
+                                    <a href="/courriers/' . htmlspecialchars($fileCour) . '" class="text-blue-600 hover:underline" target="_blank">Ouvrir PDF</a>
+                                </li>';
+                            }
+                        }
+                    } else {
+                        echo '<li class="text-gray-500">Aucun courrier archivé trouvé.</li>';
+                    }
+                ?>
+                    </ul>
+                </div>
+                
+
+                <!--Footer-->
+                <div class="flex justify-end pt-2">
+                    <button class="modal-close px-4 bg-gray-500 p-3 rounded-lg text-white hover:bg-gray-400" onclick="closeModal('archivecourrierModal')">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 		<div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
@@ -173,10 +238,17 @@ if(isset($_SESSION['admin']))
                     <div class="panel-heading">
                     </div>
                     <div class="panel-body">
+                        <div class="flex justify-between">
                         <div class="cont-btn-add" style="margin: 0.3rem;">
                             <button class="btn btn-default" type="button" onclick="openModal('courrierModal')">
 								Envoyer Courrier  
 							</button>
+                        </div>
+                        <div class="cont-btn-add" style="margin: 0.3rem;">
+                            <button class="btn btn-default" type="button" onclick="openModal('archivecourrierModal')">
+								Courrier archiver
+							</button>
+                        </div>
                         </div>
                             <div class="panel-group" id="accordion" style="display: flex; flex-direction: column; gap: 1rem;">
                             <div class="panel panel-primary mt-2">             
@@ -259,7 +331,8 @@ if(isset($_SESSION['admin']))
                                             echo "<td class='px-6 py-4 whitespace-nowrap'>{$row['envoyeur_type']}</td>";
                                             echo "<td class='px-6 py-4 whitespace-nowrap'>{$row['date_envoi']}</td>";
                                             echo "<td class='px-6 py-4 whitespace-nowrap'>
-                                            <a href='http://localhost:8080/admin/modifier_courrier.php?agent={$row['id_agent']}&&courrier={$row['id_courrier']}'  class='text-blue-500 hover:text-blue-700'>Modifier courrier</a>
+                                            <a href='http://localhost:8080/admin/modifier_courrier.php?agent={$row['id_agent']}&courrier={$row['id_courrier']}'  class='text-blue-500 hover:text-blue-700'>Modifier courrier</a> |
+                                            <a href='http://localhost:8080/admin/action/archiver_courrier.php?courrier={$row['id_courrier']}'  class='text-blue-500 hover:text-blue-700'>Archiver</a>
                                                   </td>";
                                             echo "</tr>";
                                             echo "</tr>";
@@ -561,44 +634,7 @@ if(isset($_SESSION['admin']))
             </div>
         </div>
 
-
-				<!-- DEOMO-->
-				<div class='panel-body'>
-                            <button class='btn btn-primary btn' data-toggle='modal' data-target='#myModal'>
-                              Update 
-                            </button>
-                            <div class='modal fade' id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
-                                <div class='modal-dialog'>
-                                    <div class='modal-content'>
-                                        <div class='modal-header'>
-                                            <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
-                                            <h4 class='modal-title' id='myModalLabel'>Change the User name and Password</h4>
-                                        </div>
-										<form method='post>
-                                        <div class='modal-body'>
-                                            <div class='form-group'>
-                                            <label>Change User name</label>
-                                            <input name='usname' value='<?php echo $fname; ?>' class='form-control' placeholder='Enter User name'>
-											</div>
-										</div>
-										<div class='modal-body'>
-                                            <div class='form-group'>
-                                            <label>Change Password</label>
-                                            <input name='pasd' value='<?php echo $ps; ?>' class='form-control' placeholder='Enter Password'>
-											</div>
-                                        </div>
-										
-                                        <div class='modal-footer'>
-                                            <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
-											
-                                           <input type='submit' name='up' value='Update' class='btn btn-primary'>
-										  </form>
-										   
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        </div>
             </div>
             <!-- /. PAGE INNER  -->
         </div>
