@@ -104,10 +104,9 @@ if (!isset($_SESSION['user'])) {
               <img src="./partials/images/default_profile_image.jpg" alt="profile"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
-                <i class="ti-settings text-primary"></i>
-                Parametre
-              </a>
+            <div class="account_infos p-4 border-b border-gray-200">
+              <?php echo '<p class="text-gray-700 font-semibold">Bienvenue,'.$_SESSION['user']['nom_agent'] .' ' . $_SESSION['user']['prenom_agent'].'</p>'?>
+            </div>
               <form id="logoutForm" action="/action/logout.php" method="POST" style="display: inline;">
                 <button type="submit" class="dropdown-item">
                   <i class="ti-power-off text-primary"></i>
@@ -165,7 +164,7 @@ if (!isset($_SESSION['user'])) {
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/documentation/documentation.html">
+            <a class="nav-link" href="">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Documentation</span>
             </a>
@@ -310,11 +309,11 @@ if (!isset($_SESSION['user'])) {
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024.   <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap template</a> from BootstrapDash. All rights reserved.</span>
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
           </div>
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.algerietelecom.dz/en/" target="_blank">Algerie Télécom</a></span> 
           </div>
         </footer> 
         <!-- partial -->
